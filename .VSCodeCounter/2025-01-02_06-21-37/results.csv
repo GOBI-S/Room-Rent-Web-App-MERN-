@@ -1,0 +1,75 @@
+"filename", "language", "JSON with Comments", "JSON", "JavaScript", "HTML", "TypeScript", "TypeScript JSX", "CSS", "Markdown", "XML", "comment", "blank", "total"
+"/home/gobi/Roomapp/backend/package-lock.json", "JSON", 0, 2754, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2755
+"/home/gobi/Roomapp/backend/package.json", "JSON", 0, 36, 0, 0, 0, 0, 0, 0, 0, 0, 1, 37
+"/home/gobi/Roomapp/backend/src/COnfig/db.ts", "TypeScript", 0, 0, 0, 0, 11, 0, 0, 0, 0, 1, 3, 15
+"/home/gobi/Roomapp/backend/src/Routes/global.ts", "TypeScript", 0, 0, 0, 0, 126, 0, 0, 0, 0, 9, 25, 160
+"/home/gobi/Roomapp/backend/src/Routes/ownerRoutes/createroomroute.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/gobi/Roomapp/backend/src/index.ts", "TypeScript", 0, 0, 0, 0, 23, 0, 0, 0, 0, 3, 5, 31
+"/home/gobi/Roomapp/backend/src/models/createroom.ts", "TypeScript", 0, 0, 0, 0, 47, 0, 0, 0, 0, 1, 2, 50
+"/home/gobi/Roomapp/backend/src/models/loginshema.ts", "TypeScript", 0, 0, 0, 0, 34, 0, 0, 0, 0, 0, 2, 36
+"/home/gobi/Roomapp/backend/tsconfig.json", "JSON with Comments", 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 19
+"/home/gobi/Roomapp/frontend/Room-app/README.md", "Markdown", 0, 0, 0, 0, 0, 0, 0, 43, 0, 0, 10, 53
+"/home/gobi/Roomapp/frontend/Room-app/components.json", "JSON", 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21
+"/home/gobi/Roomapp/frontend/Room-app/eslint.config.js", "JavaScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 2, 29
+"/home/gobi/Roomapp/frontend/Room-app/index.html", "HTML", 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 1, 14
+"/home/gobi/Roomapp/frontend/Room-app/package-lock.json", "JSON", 0, 10356, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10357
+"/home/gobi/Roomapp/frontend/Room-app/package.json", "JSON", 0, 73, 0, 0, 0, 0, 0, 0, 0, 0, 1, 74
+"/home/gobi/Roomapp/frontend/Room-app/postcss.config.js", "JavaScript", 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+"/home/gobi/Roomapp/frontend/Room-app/public/vite.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"/home/gobi/Roomapp/frontend/Room-app/src/App.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 0, 43, 1, 44
+"/home/gobi/Roomapp/frontend/Room-app/src/App.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 21, 0, 0, 0, 1, 2, 24
+"/home/gobi/Roomapp/frontend/Room-app/src/app/login/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 3, 33
+"/home/gobi/Roomapp/frontend/Room-app/src/assets/react.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"/home/gobi/Roomapp/frontend/Room-app/src/components/Locationcomponent.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 7, 57
+"/home/gobi/Roomapp/frontend/Room-app/src/components/login-form.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/gobi/Roomapp/frontend/Room-app/src/components/singup-form.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/aspect-ratio.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 6
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/breadcrumb.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 105, 0, 0, 0, 0, 11, 116
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/button.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 52, 0, 0, 0, 0, 6, 58
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/calendar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 70, 0, 0, 0, 0, 5, 75
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/card.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 68, 0, 0, 0, 0, 9, 77
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/carousel.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 231, 0, 0, 0, 0, 30, 261
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/collapsible.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 10
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/dropdown-menu.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 182, 0, 0, 0, 0, 18, 200
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/form.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 152, 0, 0, 0, 0, 25, 177
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/input.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 4, 23
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/label.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 5, 25
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/popover.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 7, 32
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/radio-group.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 38, 0, 0, 0, 0, 5, 43
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/resizable.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 38, 0, 0, 0, 0, 6, 44
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/select.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 145, 0, 0, 0, 0, 13, 158
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/separator.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 4, 30
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/sheet.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 125, 0, 0, 0, 0, 16, 141
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/sidebar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 696, 0, 0, 0, 12, 54, 762
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/skeleton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 3, 16
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/toast.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 115, 0, 0, 0, 0, 13, 128
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/toaster.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 31, 0, 0, 0, 0, 3, 34
+"/home/gobi/Roomapp/frontend/Room-app/src/components/ui/tooltip.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 7, 31
+"/home/gobi/Roomapp/frontend/Room-app/src/hooks/brudcrumbhooks.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 48, 0, 0, 0, 5, 7, 60
+"/home/gobi/Roomapp/frontend/Room-app/src/hooks/redduxhook.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 2, 7
+"/home/gobi/Roomapp/frontend/Room-app/src/hooks/use-mobile.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 5, 20
+"/home/gobi/Roomapp/frontend/Room-app/src/hooks/use-toast.ts", "TypeScript", 0, 0, 0, 0, 160, 0, 0, 0, 0, 3, 32, 195
+"/home/gobi/Roomapp/frontend/Room-app/src/index.css", "CSS", 0, 0, 0, 0, 0, 0, 59, 0, 0, 84, 5, 148
+"/home/gobi/Roomapp/frontend/Room-app/src/lib/utils.ts", "TypeScript", 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 2, 7
+"/home/gobi/Roomapp/frontend/Room-app/src/main.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 2, 21
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/Ownerhome/Ownercomponents/CreateRoom.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 309, 0, 0, 0, 7, 13, 329
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/Ownerhome/Ownercomponents/Editroom.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 3, 28
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/Ownerhome/Ownercomponents/Olistroom.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 128, 0, 0, 0, 1, 5, 134
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/Ownerhome/Ownercomponents/OwnerHome.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 46, 0, 0, 0, 0, 10, 56
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/Ownerhome/Ownercomponents/Sidebar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 3, 69
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/Ownerhome/index.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 2, 53
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/login/index.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 97, 0, 0, 0, 1, 5, 103
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/login/logincomponents/Cardheader.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 2, 20
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/singup/index.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 51, 0, 0, 0, 1, 5, 57
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/singup/singupcomponents/CardFoot.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 3, 26
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/singup/singupcomponents/Cardbody.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 116, 0, 0, 0, 15, 15, 146
+"/home/gobi/Roomapp/frontend/Room-app/src/pages/singup/singupcomponents/Cardheader.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 3, 18
+"/home/gobi/Roomapp/frontend/Room-app/src/store/index.ts", "TypeScript", 0, 0, 0, 0, 23, 0, 0, 0, 0, 2, 4, 29
+"/home/gobi/Roomapp/frontend/Room-app/src/store/slice.ts", "TypeScript", 0, 0, 0, 0, 25, 0, 0, 0, 0, 1, 5, 31
+"/home/gobi/Roomapp/frontend/Room-app/src/vite-env.d.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2
+"/home/gobi/Roomapp/frontend/Room-app/tailwind.config.js", "JavaScript", 0, 0, 66, 0, 0, 0, 0, 0, 0, 1, 1, 68
+"/home/gobi/Roomapp/frontend/Room-app/tsconfig.app.json", "JSON", 0, 28, 0, 0, 0, 0, 0, 0, 0, 2, 4, 34
+"/home/gobi/Roomapp/frontend/Room-app/tsconfig.json", "JSON with Comments", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 14
+"/home/gobi/Roomapp/frontend/Room-app/tsconfig.node.json", "JSON", 0, 20, 0, 0, 0, 0, 0, 0, 0, 2, 3, 25
+"/home/gobi/Roomapp/frontend/Room-app/vite.config.ts", "TypeScript", 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 1, 12
+"Total", "-", 31, 13288, 99, 13, 465, 3264, 59, 43, 2, 248, 468, 17980
