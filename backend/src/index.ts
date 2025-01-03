@@ -4,11 +4,12 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import router from './Routes/global';
 import dotenv from "dotenv";
-dotenv.config();
+
 const app = express();
 const PORT = 5000;
 
 // Middleware to parse JSON
+dotenv.config();
 const corsOptions = {
     origin: 'http://localhost:5173', // Frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
