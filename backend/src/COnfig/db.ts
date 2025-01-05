@@ -4,7 +4,6 @@ import path from "path";
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 const connectDB = async () => {
   const mongoURI = String(process.env.MONGO_URI);
-  console.log(mongoURI)
   try {
     // Connect to MongoDB using the connection string
     const conn = await mongoose.connect(mongoURI, {});

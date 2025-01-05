@@ -13,6 +13,7 @@
       "*": ["node_modules/*", "src/types/*"]
     }
   },
-  "include": ["src/**/*", "src/Routes/**/*"],
+  
+  "include": ["src/**/*", "src/Routes/**/*","src/types/**/*.d.ts"  ],
   "exclude": ["node_modules"]
 }

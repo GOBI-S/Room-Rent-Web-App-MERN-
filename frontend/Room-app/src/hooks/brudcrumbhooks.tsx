@@ -17,6 +17,8 @@ import React from "react";
       Ownerhome: "Home",
       Createroom: "Create Room",
       RoomList: "Room List",
+      Userhome:"Home",
+      UserBooking:"Booking",
       
     };
   

@@ -1,5 +1,4 @@
-import * as React from "react"
-import { GalleryVerticalEnd } from "lucide-react"
+import * as React from "react";
 
 import {
   Sidebar,
@@ -10,25 +9,46 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 const data = {
-  navMain: [
+  Ownerdata: [
     {
       title: "Home",
       url: "/Ownerhome",
     },
     {
-      title:"CreateRoom",
-      url:"/Createroom"
+      title: "CreateRoom",
+      url: "/Createroom",
     },
     {
-        title:"Room List",
-        url:"/Roomlist"
+      title: "Room List",
+      url: "/Roomlist",
     },
-],
-}
+    {
+      title:"Chats",
+      url:"/OwnerChat"
+    }
+  ],
+  userdata: [
+    {
+      title: "Home",
+      url: "/Userhome",
+    },
+    {
+      title: "Booked",
+      url:"/Booked"
+    },
+    {
+      title:"Chats",
+      url:"/UserChats"
+    }
+  ],
+};
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -37,7 +57,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
+                  <img src="/PngItem_766038.png" alt=""  className="p-2"/>
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Room Rent</span>
@@ -50,8 +70,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {data.navMain.map((item) => (
-              <SidebarMenuItem key={item.title} className="border-separate border-s-2">
+            {(user === "true" ? data.userdata : data.Ownerdata).map((item) => (
+              <SidebarMenuItem
+                key={item.title}
+                className="border-separate border-s-2"
+              >
                 <SidebarMenuButton asChild>
                   <a href={item.url} className="font-medium">
                     {item.title}
@@ -64,5 +87,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

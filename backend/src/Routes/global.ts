@@ -1,32 +1,34 @@
-import { Router, Request, Response, response } from "express";
+import { Router, Request, Response, response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { UserSignupModel } from "../models/loginshema"; // Ensure this import path is correct
 import { v2 as cloudinaryV2 } from "cloudinary";
 import { CreateRoomModel } from "../models/createroom";
 const router = Router();
 import dotenv from "dotenv";
-
+import tokenverify from '../Controllers/jwttokenverify';  // Adjust the relative path if necessary
 cloudinaryV2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 // Login Route
 router.post("/login", async (req: any, res: any) => {
   const secretKey = "gobi"; // You can use a more secure key in production
   const Logininputs = req.body;
-  console.log(Logininputs.Email, Logininputs.Password);
 
   try {
     if (!Logininputs.Email || !Logininputs.Password) {
       return res
-        .status(400)
-        .json({ error: "Email and password are required." });
+      .status(400)
+      .json({ error: "Email and password are required." });
     }
-
+    
     // Find the user by email
     const user = await UserSignupModel.findOne({ email: Logininputs.Email });
+
     console.log("finded");
 
     // If user doesn't exist
@@ -43,6 +45,16 @@ router.post("/login", async (req: any, res: any) => {
       return res.status(401).json({ error: "Invalid email or password." });
     }
 
+    const token = jwt.sign( {email:Logininputs.Email,role:user.ownership} , secretKey, { expiresIn: "30m" });
+    console.log(token)
+    res.cookie('authToken', token, {
+      httpOnly: true,  // Prevents access to the cookie via JavaScript
+      secure: false,  // Only true in production with HTTPS
+      sameSite: 'lax',  // Strict option for better security
+      maxAge: 30 * 60 * 1000, 
+      path: '/', // 30 minutes
+    });
+
     // Prepare user data for the cookie (do not send sensitive info like password)
     const navitems = {
       Email: user.email,
@@ -50,16 +62,15 @@ router.post("/login", async (req: any, res: any) => {
       Id: user.id,
       Role: user.ownership,
     };
-    console.log(navitems);
     try {
-      res.cookie("navkeys", JSON.stringify(navitems), {
-        // secure: false, // Set to true in production
-        sameSite: "lax",
-        httpOnly: false, // Prevent client-side JS access to the cookie
-      });
-      console.log("cookie sended");
+      res.cookie('navkeys', JSON.stringify(navitems), {
+        // Use true in production (HTTPS)
+       secure: true, // Use only on HTTPS
+       sameSite: 'lax', // Prevent CSRF
+     });
+      // console.log("cookie sended");
     } catch (error) {
-      console.log("error whne fecting cookie");
+      // console.log("error whne fecting cookie");
     }
 
     // Set secure cookie (for HTTPS, make sure to set secure: true)
@@ -71,7 +82,7 @@ router.post("/login", async (req: any, res: any) => {
     return res.status(500).json({ error: "Please sign up first." });
   }
 });
-router.post("/singup", async (req: any, res: any) => {
+router.post("/singup", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   const { Name, EmailID, Password, ConfirmPassword, Ownership } = req.body;
   try {
     const user = await UserSignupModel.findOne({ email: EmailID, name: Name });
@@ -97,17 +108,16 @@ router.post("/singup", async (req: any, res: any) => {
         "ship:",
         Ownership
       );
-      return res.status(200).json({ message: "singup successful!" });
+       res.status(200).json({ message: "singup successful!" });
     } else {
-      return res
-        .status(401)
+       res
         .json({ error: "your email is alredy have an account... plese login" });
     }
   } catch (error) {
-    res.status(401).json({ error: "error in finding " });
+    res.json({ error: "error in finding " });
   }
 });
-router.post("/Createroom", async (req: any, res: any) => {
+router.post("/Createroom",tokenverify, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const RoomData = req.body;
     const {
@@ -166,14 +176,14 @@ router.post("/Createroom", async (req: any, res: any) => {
     console.log("error on cloudinary");
   }
 });
-router.get("/Ownerhome", async (req: any, res: any) => {
+router.get("/Ownerhome",tokenverify, async (req: any, res: any) => {
   try {
     const email = req.query.email;
     const roomCount = await CreateRoomModel.countDocuments({ Email: email });
     res.status(201).json({ total: roomCount });
   } catch (error) {}
 });
-router.get("/Olistroom", async (req: any, res: any) => {
+router.get("/Olistroom",tokenverify, async (req: any, res: any) => {
   try {
     const email = req.query.email;
     const rooms = await CreateRoomModel.find({ Email: email });
@@ -182,7 +192,7 @@ router.get("/Olistroom", async (req: any, res: any) => {
     res.status(500).json({ message: "failed to find the list of room" });
   }
 });
-router.get("/Edit", async (req: any, res: any) => {
+router.get("/Edit",tokenverify, async (req: any, res: any) => {
   try {
     const id = req.query.id;
     const Editroom = await CreateRoomModel.findOne({ _id: id });
@@ -257,6 +267,29 @@ router.delete("/Delete",async(req:any,res:any)=>{
     }
   } catch (error) {
     res.status(500).json(error)
+  }
+})
+
+
+
+/////////////////user api
+router.get("/Userhome",tokenverify,async(req:Request,res:Response)=>{
+  try {
+    const data=await CreateRoomModel.find()
+    res.status(200).json(data)
+    
+  } catch (error) {
+    res.status(500).json(error)
+  }
+
+})
+router.get("/bookingroomdata",tokenverify,async(req:Request,res:Response)=>{
+  try {
+    const id = req.query.id;
+    const roombookingdata = await CreateRoomModel.findOne({ _id: id });
+    res.status(201).json(roombookingdata);
+  } catch (error) {
+    res.status(500).json({ message: "failed find User clicked Room room" });
   }
 })
 

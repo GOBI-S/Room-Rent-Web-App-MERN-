@@ -49,7 +49,9 @@ interface RoomData {
   images: string[]; // Specify images as string[] (array of image URLs)
 }
 const CreateRoom: React.FC = () => {
-  const navigate=useNavigate()
+  const user = useSelector((state: RootState) => state.user);
+  console.log(user.role)
+  const navigate = useNavigate();
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
@@ -58,7 +60,6 @@ const CreateRoom: React.FC = () => {
   // const [images, setImages] = React.useState<File[]>([]);
   const [blobUrls, setBlobUrls] = useState<string[]>([]);
   // console.log(date)
-  const user = useSelector((state: RootState) => state.user);
   const [Roomdata, setRoomdata] = useState<RoomData>({
     Email: user.email,
     Name: user.name,
@@ -127,8 +128,9 @@ const CreateRoom: React.FC = () => {
     }
   };
 
+  console.log(Roomdata);
+
   const Createroom = async () => {
-    
     try {
       setisloading(true);
       const response = await axios.post(
@@ -137,16 +139,34 @@ const CreateRoom: React.FC = () => {
         { withCredentials: true }
       );
       console.log("Server Response:", response.data);
-    } catch (error: any) {
-      console.error(
-        "Error from server:",
-        error.response?.data || error.message
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          if (error.response.status === 401) {
+            navigate("/login");
+            console.error("Unauthorized: No token or invalid token.");
+          } else {
+            console.error(
+              "Error:",
+              error.response.data.message || "Something went wrong."
+            );
+          }
+        } else {
+          // If no response, handle network or other errors
+          console.error("Axios Error: ", error.message);
+        }
+      } else {
+        // Handle other types of errors
+        console.error("An unknown error occurred");
+      }
     } finally {
       setisloading(false);
-      navigate("/Roomlist")
+      navigate("/Roomlist");
     }
   };
+  useEffect(() => {
+    (user.role=="Owner")?"":navigate("/login")
+  }, []);
 
   return (
     <>
@@ -215,36 +235,40 @@ const CreateRoom: React.FC = () => {
                         required
                       />
                       <div>
-                        <div className={`flex flex-col justify-center items-center ${blobUrls.length > 0 ?"":"hidden"}`}>
+                        <div
+                          className={`flex flex-col justify-center items-center ${
+                            blobUrls.length > 0 ? "" : "hidden"
+                          }`}
+                        >
                           <div>
-                          <Label htmlFor="">Preview</Label>
+                            <Label htmlFor="">Preview</Label>
                           </div>
                           <div>
-                          <Carousel
-                            plugins={[plugin.current]}
-                            className="w-m max-w-xs"
-                            onMouseEnter={plugin.current.stop}
-                            onMouseLeave={plugin.current.reset}
-                          >
-                            <CarouselContent className="w-full">
-                              {blobUrls.map((url: string, index: number) => (
-                                <CarouselItem key={index}>
-                                  <div className="p-1">
-                                    <Card>
-                                      <CardContent className="flex aspect-square items-center justify-center p-6">
-                                        <span className="text-4xl font-semibold">
-                                          <img src={`${url}`} />
-                                          <div className="flex justify-center align-bottom"></div>
-                                        </span>
-                                      </CardContent>
-                                    </Card>
-                                  </div>
-                                </CarouselItem>
-                              ))}
-                            </CarouselContent>
-                            <CarouselPrevious />
-                            <CarouselNext />
-                          </Carousel>
+                            <Carousel
+                              plugins={[plugin.current]}
+                              className="w-m max-w-xs"
+                              onMouseEnter={plugin.current.stop}
+                              onMouseLeave={plugin.current.reset}
+                            >
+                              <CarouselContent className="w-full">
+                                {blobUrls.map((url: string, index: number) => (
+                                  <CarouselItem key={index}>
+                                    <div className="p-1">
+                                      <Card>
+                                        <CardContent className="flex aspect-square items-center justify-center p-6">
+                                          <span className="text-4xl font-semibold">
+                                            <img src={`${url}`} />
+                                            <div className="flex justify-center align-bottom"></div>
+                                          </span>
+                                        </CardContent>
+                                      </Card>
+                                    </div>
+                                  </CarouselItem>
+                                ))}
+                              </CarouselContent>
+                              <CarouselPrevious />
+                              <CarouselNext />
+                            </Carousel>
                           </div>
                         </div>
                       </div>

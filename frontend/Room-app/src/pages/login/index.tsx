@@ -29,12 +29,18 @@ export function LoginPage({
 
     try {
       const response = await axios.post("http://localhost:5000/login",LoginInput,{ withCredentials: true });
+      console.log(Cookies.get)
       const navitems = Cookies.get("navkeys");
       if (navitems) {
         try {
           const parsedNavItems = JSON.parse(navitems);
-          dispatch(setUser({ name: parsedNavItems.Name, email: parsedNavItems.Email }));
-          console.log(parsedNavItems);
+
+          /////redux storing ////
+          dispatch(setUser({ name: parsedNavItems.Name, email: parsedNavItems.Email,  role: parsedNavItems.Role }));
+          //////////////////////
+
+
+
         } catch (error) {
           console.error("Failed to parse navkeys cookie:", error);
         }
@@ -42,11 +48,14 @@ export function LoginPage({
         console.log("No navkeys cookie found");
       }
       if(response.data.profiledata.Role == "Owner"){
-        navigate("/ownerhome")
+        setTimeout(() => {// Redirect to a protected route
+          navigate("/ownerhome")
+        }, 100);
       }
       else{
-        console.log("redirect to user")
-        // navigate()
+        setTimeout(() => {// Redirect to a protected route
+          navigate("/Userhome")
+        }, 100);
       }
     } catch (error) {
       console.log("error in front api")
