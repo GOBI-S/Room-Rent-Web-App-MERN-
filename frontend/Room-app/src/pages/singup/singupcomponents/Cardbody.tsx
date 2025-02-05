@@ -1,14 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { CardContent } from "@/components/ui/card";
-import { useState } from "react";
 interface CardBodyProps {
  
   signUpInputs: {
@@ -16,7 +8,6 @@ interface CardBodyProps {
     EmailID: string;
     Password: string;
     ConfirmPassword: string;
-    Ownership: string;
   };
   SetSignUpInputs: React.Dispatch<
     React.SetStateAction<{
@@ -24,14 +15,13 @@ interface CardBodyProps {
       EmailID: string;
       Password: string;
       ConfirmPassword: string;
-      Ownership: string;
     }>
   >;
     pass: () => Promise<void>;
   
 }
 
-const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs,pass }) => {
+const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs }) => {
    // Handling password confirmation state
 
   // Handle input changes
@@ -40,14 +30,6 @@ const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs,pass 
     SetSignUpInputs((prev) => ({
       ...prev,
       [name]: value, // Use name attribute to update the corresponding field in state
-    }));
-  };
-
-  // Handle the select change for ownership
-  const handleSelectChange = (value: string) => {
-    SetSignUpInputs((prev) => ({
-      ...prev,
-      Ownership: value, // Update Ownership field in state
     }));
   };
 
@@ -117,23 +99,6 @@ const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs,pass 
                 className={`${signUpInputs.Password==signUpInputs.ConfirmPassword?"":"border-red-600"}`}// Special handler for Confirm Password
               />
               {/* Show an error message if passwords don't match */}
-            </div>
-
-            {/* Role Selection */}
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="Role">Role</Label>
-              <Select
-                value={signUpInputs.Ownership}
-                onValueChange={handleSelectChange} // Use onValueChange for Select component
-              >
-                <SelectTrigger id="Role">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="User">User</SelectItem>
-                  <SelectItem value="Owner">Owner</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
         </form>

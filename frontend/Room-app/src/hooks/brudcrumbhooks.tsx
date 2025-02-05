@@ -6,7 +6,8 @@ import {
     BreadcrumbSeparator,
   } from "@/components/ui/breadcrumb";
   import { Slash } from "lucide-react";
-import React from "react";
+  import React from "react";
+
   import { useLocation } from "react-router-dom";
   
   export default function DynamicBreadcrumb() {
@@ -14,11 +15,12 @@ import React from "react";
   
     // Define a mapping for custom breadcrumb labels
     const breadcrumbLabels: { [key: string]: string } = {
-      Ownerhome: "Home",
+      Home: "Home",
       Createroom: "Create Room",
-      RoomList: "Room List",
-      Userhome:"Home",
+      Myrooms: "My Rooms",
+      Searchrooms:"All Rooms",
       UserBooking:"Booking",
+      Chating:"Chat"
       
     };
   

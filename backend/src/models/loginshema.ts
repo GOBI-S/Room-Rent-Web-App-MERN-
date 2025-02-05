@@ -26,10 +26,6 @@ const UserSchemaforsingup=new mongoose.Schema({
         required:true,
         unique:true,
     },
-    ownership:{
-        type:String,
-        required:true
-    },
 
 });
 export const UserLoginModel = mongoose.model("UserLogin", UserSchemaforlogin);

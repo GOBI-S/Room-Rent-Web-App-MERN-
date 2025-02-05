@@ -1,26 +1,35 @@
-import { Routes, Route } from 'react-router-dom';
-import { LoginPage } from './pages/login/index.tsx';
-import {SingUppage} from  './pages/singup/index.tsx';
-import CreateRoom from './pages/Owner/Ownercomponents/CreateRoom.tsx';
-import Ownerhome from './pages/Owner/Ownercomponents/OwnerHome.tsx';
-import Olistroom from './pages/Owner/Ownercomponents/Olistroom.tsx';
-import Editroom from './pages/Owner/Ownercomponents/Editroom.tsx';
-import Userhome from './pages/User/Userhome.tsx';
-import UserBookingpage from './pages/User/UserBookingpage.tsx';
+import React, { Suspense } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+const LoginPage = React.lazy(() => import('./pages/login/index.tsx'));
+const SingUppage = React.lazy(() => import('./pages/singup/index.tsx'));
+const CreateRoom = React.lazy(() => import('./pages/Userspages/Ownercomponents/CreateRoom.tsx'));
+const Ownerhome = React.lazy(() => import('./pages/Userspages/Ownercomponents/Home.tsx'));
+const Olistroom = React.lazy(() => import('./pages/Userspages/Ownercomponents/Myrooms.tsx'));
+const Editroom = React.lazy(() => import('./pages/Userspages/Ownercomponents/Editroom.tsx'));
+const UserBookingpage = React.lazy(() => import('./pages/Userspages/Ownercomponents/Bookingpage.tsx'));
+const Userhome = React.lazy(() => import('./pages/Userspages/Ownercomponents/Searchhome.tsx'));
+const Chat = React.lazy(() => import('./pages/Userspages/Ownercomponents/Chat.tsx'));
+const Mybooking = React.lazy(() => import('./pages/Userspages/Ownercomponents/Mybbooking.tsx'));
 const App = () => {
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <Routes>
       <Route path="/" element={<LoginPage />} />
-      <Route path="/login" element={< LoginPage/>} />
-      <Route path="/singup" element={< SingUppage/>}/>
-      <Route path='/ownerhome' element={< Ownerhome />}/>
-      <Route path='/Createroom'element={<CreateRoom/>}/>
-      <Route path='/Roomlist' element={<Olistroom/>}/>
-      <Route path='/Roomlist/:id' element={<Editroom/>}/>
-      <Route path="/Userhome" element={<Userhome/>}/>
-      <Route path="/Userhome/:id" element={<UserBookingpage/>}/>
-      {/* <Route path="*" element={<NotFoundPage />} /> Catch-all for 404 */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SingUppage />} />
+      <Route path="/home" element={<Ownerhome />} />
+      <Route path="/createroom" element={<CreateRoom />} />
+      <Route path="/myrooms" element={<Olistroom />} />
+      <Route path="/myrooms/:id" element={<Editroom />} />
+      <Route path="/searchrooms" element={<Userhome />} />
+      <Route path="/searchrooms/:id" element={<UserBookingpage />} />
+      <Route path="/chat/:id" element={<Chat />} />
+      <Route path="/chat" element={<Chat />} />
+      <Route path="/Mybooking" element={<Mybooking />}/>
+      <Route path="*" element={<div>404 Not Found</div>} />
     </Routes>
+  </Suspense>
   );
 };
 

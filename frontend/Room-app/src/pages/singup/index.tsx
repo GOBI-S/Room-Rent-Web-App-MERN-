@@ -9,14 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 
-export function SingUppage() {
+export default function SingUppage() {
   const navigate = useNavigate();
   const [signUpInputs, setSignUpInputs] = useState({
     Name: "",
     EmailID: "",
     Password: "",
     ConfirmPassword: "",
-    Ownership: "User",
   });
    const singupapi =async()=>{
     try {

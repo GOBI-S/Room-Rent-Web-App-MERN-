@@ -31,6 +31,7 @@ const CreateroomSchema = new mongoose.Schema(
       required: true,
     },
     images: { type: [String], required: true },
+    Createrid: { type: String, required: true }
   },
   { timestamps: true }
 );

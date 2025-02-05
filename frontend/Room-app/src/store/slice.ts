@@ -1,16 +1,15 @@
-// store/userSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
   name: string;
   email: string;
-  role:string;
+  Userid: string;
 }
 
 const initialState: UserState = {
   name: "",
-  email: "",
-  role:"",
+  email: "", // Initial state will be populated from persisted storage
+  Userid: "",
 };
 
 const userSlice = createSlice({
@@ -20,12 +19,12 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<UserState>) => {
       state.name = action.payload.name;
       state.email = action.payload.email;
-      state.role=action.payload.role;
+      state.Userid = action.payload.Userid;
     },
     clearUser: (state) => {
       state.name = "";
       state.email = "";
-      state.role="";
+      state.Userid = "";
     },
   },
 });
