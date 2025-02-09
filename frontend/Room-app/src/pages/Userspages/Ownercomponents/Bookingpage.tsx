@@ -9,11 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+
 import {
   Card,
   CardContent,

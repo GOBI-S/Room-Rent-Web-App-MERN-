@@ -23,13 +23,12 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -37,8 +36,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import React from "react";
-import Autoplay from "embla-carousel-autoplay";
+
 type Booking = {
   bookerId: string;
   from: string;
@@ -50,18 +48,13 @@ type Room = {
   booked: Booking[];
 };
 
-type UserBooking = {
-  roomid: string;
-  from: string;
-  to: string;
-};
 
 const Mybbooking = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  );
+  // const plugin = React.useRef(
+  //   Autoplay({ delay: 2000, stopOnInteraction: true })
+  // );
   const [deatilsofroom, setdeatilsofroom] = useState<any>({});
   const [roomNames, setRoomNames] = useState<{ [key: string]: string }>({});
   const [rooms, setRooms] = useState<Room[]>([]);

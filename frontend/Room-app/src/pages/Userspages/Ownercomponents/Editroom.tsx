@@ -11,7 +11,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   Card,
   CardHeader,
-  CardDescription,
   CardContent,
   CardFooter,
 } from "@/components/ui/card";

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-day-picker";
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useAppSelector } from "@/hooks/redduxhook";
 import { Button } from "@/components/ui/button";
@@ -44,7 +44,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import Autoplay from "embla-carousel-autoplay";
 import DynamicBreadcrumb from "@/hooks/brudcrumbhooks";
 import { AppSidebar } from "./Sidebar";
 import { cn } from "@/lib/utils";
@@ -73,9 +72,9 @@ const Userhome = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState<Roomtype[]>([]);
   const [filteredRooms, setFilteredRooms] = useState<Roomtype[]>([]);
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  );
+  // const plugin = React.useRef(
+  //   Autoplay({ delay: 2000, stopOnInteraction: true })
+  // );
   const isRoomAvailable = (
     roomId: string,
     dateRange: DateRange | undefined

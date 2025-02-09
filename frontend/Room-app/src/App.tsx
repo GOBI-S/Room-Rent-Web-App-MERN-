@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 const LoginPage = React.lazy(() => import('./pages/login/index.tsx'));
 const SingUppage = React.lazy(() => import('./pages/singup/index.tsx'));
