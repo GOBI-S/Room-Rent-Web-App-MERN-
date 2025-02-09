@@ -5,7 +5,6 @@ import cors from "cors";
 import router from "./Routes/global";
 import dotenv from "dotenv";
 import http from "http";
-import { initializeSocket } from "./Chat/chat";
 
 dotenv.config(); // Load environment variables
 
@@ -32,7 +31,6 @@ app.use(router); // Mount routes after middleware
 
 // Connect to database
 connectDB();
-initializeSocket(server);
 
 // Start the server
 server.listen(PORT, () => {

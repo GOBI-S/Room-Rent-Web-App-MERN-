@@ -76,7 +76,6 @@ const Userhome = () => {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
-
   const isRoomAvailable = (
     roomId: string,
     dateRange: DateRange | undefined
@@ -90,6 +89,8 @@ const Userhome = () => {
     return !booked.some((booking) => {
       const bookingFrom = booking.from;
       const bookingTo = booking.to;
+
+      // Check if the selected date range overlaps with the booked date range
       return (
         (selectedFrom >= bookingFrom && selectedFrom <= bookingTo) ||
         (selectedTo >= bookingFrom && selectedTo <= bookingTo) ||
@@ -97,7 +98,6 @@ const Userhome = () => {
       );
     });
   };
-
   const lockbooking = async (id: string) => {
     try {
       const response = await axios.get("http://localhost:5000/bookings/get", {
@@ -250,104 +250,109 @@ const Userhome = () => {
             </PopoverContent>
           </Popover>
         </div>
-        <div className="grid grid-cols-3 gap-5 m-3">
-          {filteredRooms.map(
-            (
-              room // Changed from total to filteredRooms
-            ) => (
-              <Card key={room._id}>
-                <CardHeader className="flex justify-center items-center">
-                  <CardTitle>Owner Name: {room.Name}</CardTitle>
-                  <Carousel
-                    plugins={[plugin.current]}
-                    className="w-m max-w-xs"
-                    onMouseEnter={plugin.current.stop}
-                    onMouseLeave={plugin.current.reset}
-                  >
-                    <CarouselContent>
-                      {room.images.map((url, index) => (
-                        <CarouselItem key={index}>
-                          <div className="p-1">
-                            <Card>
-                              <CardContent className="flex aspect-square items-center justify-center p-6">
-                                <img
-                                  src={url}
-                                  alt={`Room ${index + 1}`}
-                                  className="w-full h-full object-cover rounded-lg"
-                                />
-                              </CardContent>
-                            </Card>
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                  </Carousel>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex w-full flex-col justify-normal items-center gap-3">
-                    <h1 className="font-bold tracking-wide">
-                      Rent Per Day:{" "}
-                      <span className="hover:tracking-widest">
-                        {room.Price}
-                      </span>
-                    </h1>
-                    <p>Property Name: {room.Propertyname}</p>
-                    <p>Place: {room.Location}</p>
-                    <p>Contact: {room.ContactNumber}</p>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button onClick={() => handleBookNow(room._id)}>
-                    Book Now!
-                  </Button>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="destructive">Email To</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-md">
-                      <DialogHeader>
-                        <DialogTitle className="text-center">Email</DialogTitle>
-                        <DialogDescription className="text-center">
-                          Write an email to the room owner
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div className="grid gap-2">
-                          <Label htmlFor="email">Recipient</Label>
-                          <Input id="email" value={room.Email} readOnly />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-3">
+          {filteredRooms.map((room) => (
+            <Card key={room._id} className="flex flex-col">
+              <CardHeader className="flex-grow">
+                <CardTitle className="text-center text-lg mb-2">
+                  Owner Name: {room.Name}
+                </CardTitle>
+                <Carousel className="w-full max-w-xs mx-auto">
+                  <CarouselContent>
+                    {room.images.map((url, index) => (
+                      <CarouselItem key={index}>
+                        <div className="p-1">
+                          <Card>
+                            <CardContent className="flex aspect-square items-center justify-center p-2">
+                              <img
+                                src={url || "/placeholder.svg"}
+                                alt={`Room ${index + 1}`}
+                                className="w-full h-full object-cover rounded-lg"
+                              />
+                            </CardContent>
+                          </Card>
                         </div>
-                        <div className="grid gap-2">
-                          <Label htmlFor="message">Message</Label>
-                          <Input
-                            id="message"
-                            placeholder="Enter your message"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                          />
-                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="hidden 2xl:flex" />
+                  <CarouselNext className="hidden 2xl:flex" />
+                </Carousel>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <h1 className="font-bold tracking-wide text-base sm:text-lg">
+                    Rent Per Day:{" "}
+                    <span className="hover:tracking-widest">{room.Price}</span>
+                  </h1>
+                  <p className="text-sm sm:text-base">
+                    Property Name: {room.Propertyname}
+                  </p>
+                  <p className="text-sm sm:text-base">Place: {room.Location}</p>
+                  <p className="text-sm sm:text-base">
+                    Contact: {room.ContactNumber}
+                  </p>
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col sm:flex-row justify-between gap-2">
+                <Button
+                  className="w-full sm:w-auto"
+                  onClick={() => handleBookNow(room._id)}
+                >
+                  Book Now!
+                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full sm:w-auto" variant="destructive">
+                      Email To
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="text-center">Email</DialogTitle>
+                      <DialogDescription className="text-center">
+                        Write an email to the room owner
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="email">Recipient</Label>
+                        <Input id="email" value={room.Email} readOnly />
                       </div>
-                      <DialogFooter className="flex justify-between">
-                        <DialogClose asChild>
-                          <Button type="button" variant="secondary">
-                            Close
-                          </Button>
-                        </DialogClose>
+                      <div className="grid gap-2">
+                        <Label htmlFor="message">Message</Label>
+                        <Input
+                          id="message"
+                          placeholder="Enter your message"
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter className="flex flex-col sm:flex-row justify-between gap-2 mt-4">
+                      <DialogClose asChild>
                         <Button
                           type="button"
-                          onClick={() => handleSendEmail(room.Email)}
-                          disabled={!message.trim()}
+                          variant="secondary"
+                          className="w-full sm:w-auto"
                         >
-                          Send
+                          Close
                         </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                </CardFooter>
-              </Card>
-            )
-          )}
+                      </DialogClose>
+                      <Button
+                        type="button"
+                        onClick={() => handleSendEmail(room.Email)}
+                        disabled={!message.trim()}
+                        className="w-full sm:w-auto"
+                      >
+                        Send
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </SidebarInset>
     </SidebarProvider>

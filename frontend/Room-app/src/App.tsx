@@ -9,7 +9,6 @@ const Olistroom = React.lazy(() => import('./pages/Userspages/Ownercomponents/My
 const Editroom = React.lazy(() => import('./pages/Userspages/Ownercomponents/Editroom.tsx'));
 const UserBookingpage = React.lazy(() => import('./pages/Userspages/Ownercomponents/Bookingpage.tsx'));
 const Userhome = React.lazy(() => import('./pages/Userspages/Ownercomponents/Searchhome.tsx'));
-const Chat = React.lazy(() => import('./pages/Userspages/Ownercomponents/Chat.tsx'));
 const Mybooking = React.lazy(() => import('./pages/Userspages/Ownercomponents/Mybbooking.tsx'));
 const App = () => {
   return (
@@ -24,8 +23,6 @@ const App = () => {
       <Route path="/myrooms/:id" element={<Editroom />} />
       <Route path="/searchrooms" element={<Userhome />} />
       <Route path="/searchrooms/:id" element={<UserBookingpage />} />
-      <Route path="/chat/:id" element={<Chat />} />
-      <Route path="/chat" element={<Chat />} />
       <Route path="/Mybooking" element={<Mybooking />}/>
       <Route path="*" element={<div>404 Not Found</div>} />
     </Routes>

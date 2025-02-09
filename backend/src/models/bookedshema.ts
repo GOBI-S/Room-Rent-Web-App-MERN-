@@ -1,13 +1,27 @@
-import mongoose, { Schema } from "mongoose";
-const bookedshema = new Schema({
-  booked: [
-    {
-      roomid:{type:String,required:true},
-      bookerId: {type:String,required:true},
-      from:{type:Date,required:true},
-      to:{type:Date}
-    },
-  ],
-  });
-  const bookschema = mongoose.model('ChatList', bookedshema);
-  export default bookschema;
+import mongoose, { Document, Schema } from 'mongoose';
+
+interface IBooked {
+    bookerId: string;
+    from: Date;
+    to: Date;
+}
+
+interface IRoom extends Document {
+    roomid: string;
+    booked: IBooked[];
+}
+
+const bookedSchema = new Schema({
+    bookerId: { type: String, required: true },
+    from: { type: Date, required: true },
+    to: { type: Date, required: true },
+});
+
+const roomSchema = new Schema({
+    roomid: { type: String, required: true, unique: true },
+    booked: [bookedSchema],
+});
+
+const Room = mongoose.model<IRoom>('Room', roomSchema);
+
+export default Room;

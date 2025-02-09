@@ -47,8 +47,9 @@ interface RoomData {
   ContactNumber: string;
   Nobedrooms: string;
   images: string[]; // Specify images as string[] (array of image URLs)
-  Createrid:string,
+  Createrid: string;
 }
+
 const CreateRoom: React.FC = () => {
   const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
@@ -57,9 +58,7 @@ const CreateRoom: React.FC = () => {
   );
   const [isallfieldok, setisallfieldok] = useState(false);
   const [isloading, setisloading] = useState(false);
-  // const [images, setImages] = React.useState<File[]>([]);
   const [blobUrls, setBlobUrls] = useState<string[]>([]);
-  // console.log(date)
   const [Roomdata, setRoomdata] = useState<RoomData>({
     Email: user.email,
     Name: user.name,
@@ -69,8 +68,9 @@ const CreateRoom: React.FC = () => {
     ContactNumber: "",
     Nobedrooms: "",
     images: [],
-    Createrid:user.Userid,
+    Createrid: user.Userid,
   });
+
   useEffect(() => {
     const allFieldsFilled =
       Roomdata.Location !== "" &&
@@ -81,55 +81,62 @@ const CreateRoom: React.FC = () => {
       Roomdata.images.length > 0;
     setisallfieldok(allFieldsFilled);
   }, [Roomdata]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setRoomdata((prev) => ({
       ...prev,
-      [name]: value, // Use name attribute to update the corresponding field in state
+      [name]: value,
     }));
   };
+
   const handleSelectChange = (value: string) => {
     setRoomdata((prev) => ({
       ...prev,
       Nobedrooms: value,
     }));
   };
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
       const base64Files: string[] = [];
 
-      // Create a Promise to wait for all images to be read
       const promises = filesArray.map((file) => {
         return new Promise<string>((resolve) => {
           const reader = new FileReader();
-
-          // Read the file as base64
           reader.readAsDataURL(file);
-
           reader.onloadend = () => {
             if (reader.result) {
               base64Files.push(reader.result as string);
-              resolve(reader.result as string); // Resolve when done
+              resolve(reader.result as string);
             }
           };
         });
       });
 
-      // Wait until all files are processed
       Promise.all(promises).then(() => {
-        // Now that all base64 strings are ready, update the state
         const fileURLs = filesArray.map((file) => URL.createObjectURL(file));
-        setBlobUrls(fileURLs); // Set object URLs if needed
+        setBlobUrls(fileURLs);
         setRoomdata((prevRoomdata) => ({
           ...prevRoomdata,
-          images: base64Files, // Store base64 strings
+          images: base64Files,
         }));
       });
     }
   };
 
-  console.log(Roomdata);
+  // Function to delete an uploaded image
+  const deleteImage = (index: number) => {
+    const updatedBlobUrls = blobUrls.filter((_, idx) => idx !== index);
+    const updatedImages = Roomdata.images.filter((_, idx) => idx !== index);
+
+    setBlobUrls(updatedBlobUrls);
+    setRoomdata((prevRoomdata) => ({
+      ...prevRoomdata,
+      images: updatedImages,
+    }));
+  };
 
   const Createroom = async () => {
     try {
@@ -137,7 +144,9 @@ const CreateRoom: React.FC = () => {
       const response = await axios.post(
         "http://localhost:5000/Createroom",
         Roomdata,
-        { withCredentials: true }
+        {
+          withCredentials: true,
+        }
       );
       console.log("Server Response:", response.data);
     } catch (error: unknown) {
@@ -153,11 +162,9 @@ const CreateRoom: React.FC = () => {
             );
           }
         } else {
-          // If no response, handle network or other errors
           console.error("Axios Error: ", error.message);
         }
       } else {
-        // Handle other types of errors
         console.error("An unknown error occurred");
       }
     } finally {
@@ -178,8 +185,8 @@ const CreateRoom: React.FC = () => {
               <DynamicBreadcrumb />
             </div>
           </header>
-          <div className="flex m-20 justify-center items-center">
-            <Card className="w-[700px]">
+          <div className="flex m-20 justify-center items-center w-full max-w-1xl md:max-w-3xl lg:max-w-4xl xl:max-w-[900px] mx-auto">
+            <Card className="w-full max-w-1xl md:max-w-3xl lg:max-w-4xl xl:max-w-[900px] mx-auto">
               {isloading && (
                 <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
                   <div className="w-16 h-16 border-4 border-t-blue-500 border-gray-300 rounded-full animate-spin z-50"></div>
@@ -187,12 +194,12 @@ const CreateRoom: React.FC = () => {
               )}
               <CardHeader>
                 <CardTitle>Create Room</CardTitle>
-                <CardDescription>Create your new Room .</CardDescription>
+                <CardDescription>Create your new Room.</CardDescription>
               </CardHeader>
 
               <CardContent>
                 <form>
-                  <div className="grid w-full items-center gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-2 xl:gap-20">
                     <div className="flex flex-col space-y-1.5">
                       <Label htmlFor="Email">Email</Label>
                       <Input
@@ -202,6 +209,7 @@ const CreateRoom: React.FC = () => {
                         disabled
                         required
                       />
+
                       <Label htmlFor="name">Name</Label>
                       <Input
                         id="name"
@@ -209,85 +217,38 @@ const CreateRoom: React.FC = () => {
                         placeholder={user.name}
                         disabled
                       />
+
                       <Label htmlFor="Location">Location</Label>
                       <Input
                         id="Location"
                         name="Location"
-                        placeholder="Location of yoor room"
                         onChange={handleChange}
                       />
+
                       <Label htmlFor="Price">Price</Label>
                       <Input
                         required
                         id="Price"
                         name="Price"
-                        placeholder="Price Per Day"
                         onChange={handleChange}
                       />
-                      <Label htmlFor="picture">Picture</Label>
-                      <Input
-                        id="picture"
-                        type="file"
-                        multiple
-                        onChange={handleImageChange}
-                        required
-                      />
-                      <div>
-                        <div
-                          className={`flex flex-col justify-center items-center ${
-                            blobUrls.length > 0 ? "" : "hidden"
-                          }`}
-                        >
-                          <div>
-                            <Label htmlFor="">Preview</Label>
-                          </div>
-                          <div>
-                            <Carousel
-                              plugins={[plugin.current]}
-                              className="w-m max-w-xs"
-                              onMouseEnter={plugin.current.stop}
-                              onMouseLeave={plugin.current.reset}
-                            >
-                              <CarouselContent className="w-full">
-                                {blobUrls.map((url: string, index: number) => (
-                                  <CarouselItem key={index}>
-                                    <div className="p-1">
-                                      <Card>
-                                        <CardContent className="flex aspect-square items-center justify-center p-6">
-                                          <span className="text-4xl font-semibold">
-                                            <img src={`${url}`} />
-                                            <div className="flex justify-center align-bottom"></div>
-                                          </span>
-                                        </CardContent>
-                                      </Card>
-                                    </div>
-                                  </CarouselItem>
-                                ))}
-                              </CarouselContent>
-                              <CarouselPrevious />
-                              <CarouselNext />
-                            </Carousel>
-                          </div>
-                        </div>
-                      </div>
+
                       <Label htmlFor="Propertyname">Property Name</Label>
                       <Input
                         required
                         id="Propertyname"
                         name="Propertyname"
-                        placeholder="Name of your Property"
                         onChange={handleChange}
                       />
+
                       <Label htmlFor="ContactNumber">Contact Number</Label>
                       <Input
                         required
                         id="ContactNumber"
                         name="ContactNumber"
-                        placeholder="Contact Number"
                         onChange={handleChange}
                       />
-                    </div>
-                    <div className="flex flex-col space-y-1.5">
+
                       <Label htmlFor="Nobedroom">No Of Bedrooms</Label>
                       <Select onValueChange={handleSelectChange} required>
                         <SelectTrigger id="Nobedroom" name="Nobedroom">
@@ -306,12 +267,68 @@ const CreateRoom: React.FC = () => {
                         </SelectContent>
                       </Select>
                     </div>
+
+                    <div className="flex flex-col space-y-1.5">
+                      <Label htmlFor="picture">Picture</Label>
+                      <Input
+                        id="picture"
+                        type="file"
+                        multiple
+                        onChange={handleImageChange}
+                        required
+                      />
+
+                      {blobUrls.length > 0 && (
+                        <div className="flex flex-col justify-center items-center">
+                          <Label>Preview</Label>
+                          <Carousel
+                            plugins={[plugin.current]}
+                            className="w-full max-w-xs"
+                            onMouseEnter={plugin.current.stop}
+                            onMouseLeave={plugin.current.reset}
+                          >
+                            <CarouselContent>
+                              {blobUrls.map((url, index) => (
+                                <CarouselItem key={index}>
+                                  <div className="p-1 relative">
+                                    <Card>
+                                      <CardContent className="flex aspect-square items-center justify-center p-6">
+                                        <img
+                                          src={url}
+                                          className="object-cover w-full h-full rounded-lg"
+                                        />
+                                      </CardContent>
+                                    </Card>
+                                  </div>
+                                  <Button
+                                    variant="outline"
+                                    className=" pl-[130px]  m-2 text-red-500 bg-transparent border border-none"
+                                    onClick={() => deleteImage(index)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </CarouselItem>
+                              ))}
+                            </CarouselContent>
+                            <CarouselPrevious className="hidden sm:flex " />
+                            <CarouselNext className="hidden sm:flex" />
+                          </Carousel>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </form>
               </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button variant="outline">Cancel</Button>
-                <Button onClick={Createroom} disabled={!isallfieldok}>
+
+              <CardFooter className="flex flex-col sm:flex-row justify-between gap-2">
+                <Button variant="outline" className="w-full sm:w-auto">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={Createroom}
+                  disabled={!isallfieldok}
+                  className="w-full sm:w-auto"
+                >
                   Publish
                 </Button>
               </CardFooter>

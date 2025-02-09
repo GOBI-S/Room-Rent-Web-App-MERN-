@@ -21,12 +21,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import React, { useEffect }  from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useAppSelector } from "@/hooks/redduxhook";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import 'animate.css'; // Import animate.css for animation
+
 interface Roomtype {
   _id: string;
   Email: string;
@@ -43,14 +45,13 @@ const Olistroom = () => {
   const navigate = useNavigate();
   const email = useAppSelector((state) => state.user.email);
   const [total, settotal] = useState<Roomtype[]>([]);
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  );
-  async function deleteapi(id:any) {
+  const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+
+  async function deleteapi(id: any) {
     const data = { id: id };
     try {
       const response = await axios.delete("http://localhost:5000/Delete", {
-        data: data, // Send the id in the body
+        data: data,
       });
       console.log("from delete api server side", response.data);
     } catch (error) {
@@ -64,14 +65,14 @@ const Olistroom = () => {
         params: { email },
         withCredentials: true,
       });
-      console.log("respoonsefrom server:",response.data)
+      console.log("response from server:", response.data);
       const rooms = response.data;
       settotal(rooms);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           if (error.response.status === 401) {
-            navigate("/login")
+            navigate("/login");
             console.error("Unauthorized: No token or invalid token.");
           } else {
             console.error(
@@ -80,18 +81,18 @@ const Olistroom = () => {
             );
           }
         } else {
-          // If no response, handle network or other errors
           console.error("Axios Error: ", error.message);
         }
       } else {
-        // Handle other types of errors
         console.error("An unknown error occurred");
       }
     }
   }
-  useEffect(()=>{
-    Totalroom()
-  },[email])
+
+  useEffect(() => {
+    Totalroom();
+  }, [email]);
+
   return (
     <>
       <SidebarProvider>
@@ -104,41 +105,45 @@ const Olistroom = () => {
               <DynamicBreadcrumb />
             </div>
           </header>
-          <div className="grid grid-cols-3 gap-5 m-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
             {total.map((rooms, index) => (
-              <div key={index}>
-                <Card>
+              <div
+                key={index}
+                className="animate__animated animate__fadeInUp"
+                style={{ animationDelay: `${index * 100}ms` }} // Stagger animations
+              >
+                <Card className="w-full p-4">
                   <CardHeader className="flex justify-center items-center">
                     <CardTitle>Owner Name: {rooms.Name}</CardTitle>
                     <Carousel
                       plugins={[plugin.current]}
-                      className="w-m max-w-xs"
                       onMouseEnter={plugin.current.stop}
                       onMouseLeave={plugin.current.reset}
                     >
                       <CarouselContent>
                         {rooms.images.map((url, index) => (
                           <CarouselItem key={index}>
-                            <div className="p-1">
+                            <div className="">
                               <Card>
                                 <CardContent className="flex aspect-square items-center justify-center p-6">
-                                  <span className="text-4xl font-semibold">
-                                    <img src={`${url}`} />
-                                  </span>
+                                  <img
+                                    src={url}
+                                    alt={`Room image ${index}`}
+                                    className="object-cover w-full h-full rounded"
+                                  />
                                 </CardContent>
                               </Card>
                             </div>
                           </CarouselItem>
                         ))}
                       </CarouselContent>
-                      <CarouselPrevious />
-                      <CarouselNext />
+                      <CarouselPrevious className="hidden lg:flex" />
+                      <CarouselNext className="hidden lg:flex" />
                     </Carousel>
                   </CardHeader>
                   <CardContent>
                     <div className="flex w-full flex-col justify-normal items-center gap-3">
-                      <h1 className="font-bold tracking-wide ">
-                        {" "}
+                      <h1 className="font-bold tracking-wide">
                         Rent Per Day :{" "}
                         <span className="hover:tracking-widest">
                           {rooms.Price}
@@ -149,16 +154,20 @@ const Olistroom = () => {
                       <p>Contact : {rooms.ContactNumber}</p>
                     </div>
                   </CardContent>
-                  <CardFooter className="flex justify-between">
+                  <CardFooter className="flex justify-between flex-col sm:flex-row gap-2">
                     <Button
                       variant="destructive"
                       onClick={() => {
                         deleteapi(rooms._id);
                       }}
+                      className="w-full sm:w-auto"
                     >
                       Delete
                     </Button>
-                    <Button onClick={() => navigate(`/Myrooms/${rooms._id}`)}>
+                    <Button
+                      onClick={() => navigate(`/Myrooms/${rooms._id}`)}
+                      className="w-full sm:w-auto"
+                    >
                       Edit
                     </Button>
                   </CardFooter>

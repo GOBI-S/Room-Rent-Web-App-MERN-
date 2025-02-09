@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -10,37 +9,35 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { title } from "process";
+import { useLocation } from "react-router-dom"; // To highlight the current route dynamically
+
 const data = {
   Ownerdata: [
     {
       title: "Home",
       url: "/Home",
+      status: false,
     },
     {
       title: "CreateRoom",
       url: "/Createroom",
+      status: false,
     },
     {
       title: "My Rooms",
       url: "/Myrooms",
-    },
-    {
-      title: "Chats",
-      url: "/Chat",
+      status: false,
     },
     {
       title: "Search Rooms",
       url: "/Searchrooms",
+      status: false,
     },
     {
-      title: "Booked Rooms",
-      url: "/Booked",
+      title: "My Bookings",
+      url: "/Mybooking",
+      status: false,
     },
-    {
-      title:"My Bookings",
-      url:"/Mybooking"
-    }
   ],
   userdata: [],
 };
@@ -49,6 +46,28 @@ export function AppSidebar({
   user,
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const [items, setItems] = React.useState(data.Ownerdata);
+  const location = useLocation(); // Get the current route
+
+  // Sync the active state based on the current route
+  React.useEffect(() => {
+    setItems((prevItems) =>
+      prevItems.map((item) => ({
+        ...item,
+        status: item.url === location.pathname, // Set active state based on current URL
+      }))
+    );
+  }, [location.pathname]);
+
+  const handleItemClick = (clickedItem: any) => {
+    setItems((prevItems) =>
+      prevItems.map((item) => ({
+        ...item,
+        status: item.title === clickedItem.title ? !item.status : item.status, // Toggle only the clicked item
+      }))
+    );
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -70,12 +89,14 @@ export function AppSidebar({
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {data.Ownerdata.map((item) => (
+            {items.map((item) => (
               <SidebarMenuItem
                 key={item.title}
-                className="border-separate border-s-2 active:none"
+                className={`border-separate border-s-2 active:none font-medium ${
+                  item.status ? "bg-slate-500 text-white" : "bg-transparent"
+                }`}
               >
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild onClick={() => handleItemClick(item)}>
                   <a href={item.url} className="font-medium">
                     {item.title}
                   </a>

@@ -4,12 +4,15 @@ import bcrypt from "bcrypt";
 import { UserSignupModel } from "../models/loginshema"; // Ensure this import path is correct
 import { v2 as cloudinaryV2 } from "cloudinary";
 import { CreateRoomModel } from "../models/createroom";
+import Bookschema from "../models/bookedshema";
 const router = Router();
 import path from "path";
 import fs from "fs";
 import dotenv from "dotenv";
 import tokenverify from "../Controllers/jwttokenverify"; // Adjust the relative path if necessary
-import bookedshema from "../models/bookedshema";
+import Room from '../models/bookedshema';
+import { CronJob } from "cron";
+import mongoose from "mongoose";
 cloudinaryV2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -17,7 +20,6 @@ cloudinaryV2.config({
 });
 
 const filePath = path.join(__dirname, "testBookings.json");
-
 // Login Route
 router.post("/login", async (req: any, res: any) => {
   const secretKey = "gobi"; // You can use a more secure key in production
@@ -301,95 +303,137 @@ router.get(
     }
   }
 );
-const writeBookings = (bookings: any[]) => {
-  fs.writeFileSync(filePath, JSON.stringify(bookings, null, 2));
-};
+// const writeBookings = (bookings: any[]) => {
+//   fs.writeFileSync(filePath, JSON.stringify(bookings, null, 2));
+// };
 
-const readBookings = () => {
+// const readBookings = () => {
+//   try {
+//     const data = fs.readFileSync(filePath, "utf-8");
+//     return JSON.parse(data);
+//   } catch (error) {
+//     return [];
+//   }
+// };
+router.post("/booked", async (req: Request, res: Response) => {
   try {
-    const data = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(data);
-  } catch (error) {
-    return [];
-  }
-};
+      const { roomid, bookerId, from, to } = req.body;
 
-router.post("/booked", tokenverify, async (req: Request, res: Response) => {
-  try {
-    const { roomid, bookerId, from, to } = req.body;
-    if (!roomid || !bookerId || !from || !to) {
-      res.status(400).json({ message: "Missing required fields" });
-    }
-    // Read existing bookings
-    const bookings = readBookings();
-    // Find room entry
-    let roomBooking = bookings.find((b: any) => b.roomid === roomid);
-    if (!roomBooking) {
-      // If roomid does not exist, create a new entry
-      roomBooking = { roomid, booked: [] };
-      bookings.push(roomBooking);
-    }
-    // Check if the new booking overlaps
-    const isOverlap = roomBooking.booked.some(
-      (booking: any) =>
-        new Date(booking.from) < new Date(to) &&
-        new Date(booking.to) > new Date(from)
-    );
-    if (isOverlap) {
-      res.status(400).json({ message: "Selected dates are already booked" });
-    } else {
-      // Add new booking to room's booked array
-      roomBooking.booked.push({ bookerId, from, to });
-      // Save updated bookings back to file
-      fs.writeFileSync(filePath, JSON.stringify(bookings, null, 2));
-      res.json({ message: "Booking added!", bookings });
-    }
+      if (!roomid || !bookerId || !from || !to) {
+           res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Find the room or create a new one if it doesn't exist
+      let room = await Room.findOne({ roomid });
+
+      if (!room) {
+          room = new Room({ roomid, booked: [] });
+      }
+
+      // Check for overlapping bookings
+      const isOverlap = room.booked.some(
+          (booking) =>
+              new Date(booking.from) < new Date(to) &&
+              new Date(booking.to) > new Date(from)
+      );
+
+      if (isOverlap) {
+           res.status(400).json({ message: "Selected dates are already booked" });
+      }
+
+      // Add the new booking
+      room.booked.push({ bookerId, from, to });
+
+      // Save the room with the new booking
+      await room.save();
+
+      res.json({ message: "Booking added!", room });
   } catch (error) {
-    console.error("Error in booking:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+      console.error("Error in booking:", error);
+      res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-router.get("/bookings/get", (req: any, res: any) => {
-  const { roomId } = req.query; // Get the room ID from query parameters
-
+router.get("/bookings/get", async (req: any, res: any) => {
   try {
-    const bookings = readBookings(); // Read all bookings
+    const { roomId } = req.query;
 
     if (!roomId) {
-      return res.json(bookings); // Return all bookings if no ID is provided
+      const allRooms = await Room.find({});
+      return res.json(allRooms); // Use `return` to exit the function
     }
 
-    // Ensure `roomId` is treated as a string and correctly compared
-    const roomBooking = bookings.find((b: any) => b.roomid === roomId.toString());
+    const room = await Room.findOne({ roomid: roomId });
 
-    if (!roomBooking) {
-      return res.json([]); // Return an empty array if no booking found for this room
+    if (!room) {
+      return res.json([]); // Use `return` to exit the function
     }
 
-    console.log("Room object:", roomBooking);
-    return res.json(roomBooking.booked); // Return the `booked` array
+    return res.json(room.booked); // Use `return` to exit the function
   } catch (error) {
     console.error("Error fetching bookings:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" }); // Use `return` to exit the function
   }
 });
-router.get("/bookings/gets", (req: any, res: any) => {
-  try {
-    const data= readBookings()
-    res.json(data)
-    
-  } catch (error) {
-    res.json.message("error in getting bookingfor user data")
-  }
-})
 
-router.delete("/bookings/:roomid", (req: Request, res: Response) => {
-  const { roomid } = req.params;
-  let bookings = readBookings();
-  bookings = bookings.filter((booking: any) => booking.roomid !== roomid);
-  writeBookings(bookings);
-  res.json({ message: "Booking deleted", bookings });
+// GET /bookings/gets - Get all bookings
+router.get("/bookings/gets", async (req: Request, res: Response) => {
+  try {
+      const data = await Room.find({});
+      res.json(data);
+  } catch (error) {
+      res.status(500).json({ message: "Error in getting booking data" });
+  }
 });
+
+// DELETE /bookings/:roomid - Delete a room and its bookings
+router.delete("/bookings/:roomid", async (req: Request, res: Response) => {
+  try {
+      const { roomid } = req.params;
+
+      const result = await Room.deleteOne({ roomid });
+
+      if (result.deletedCount === 0) {
+           res.status(404).json({ message: "Room not found" });
+      }
+
+      res.json({ message: "Booking deleted" });
+  } catch (error) {
+      console.error("Error deleting booking:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// const Room = mongoose.model<IRoom>('Room', Bookschema);
+async function removePastBookings() {
+  const currentDate = new Date();
+
+  try {
+      // Find all rooms
+      const rooms = await Room.find({});
+
+      for (const room of rooms) {
+          // Filter out past bookings
+          room.booked = room.booked.filter((booking) => {
+              return booking.to >= currentDate; // Keep bookings that are still active
+          });
+
+          // Save the updated room document
+          await room.save();
+          console.log(`Updated room with ID ${room.roomid}.`);
+      }
+
+      console.log('Past bookings removed successfully.');
+  } catch (err) {
+      console.error('Error removing past bookings:', err);
+  }
+}
+
+// Set up a cron job to run the function daily at midnight
+const job = new CronJob('0 0 * * *', removePastBookings); // Runs at 00:00 every day
+job.start();
+
+console.log('Cron job started. It will run daily at midnight.');
+
 
 export default router;

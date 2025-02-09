@@ -7,7 +7,7 @@ import DynamicBreadcrumb from "@/hooks/brudcrumbhooks";
 import { AppSidebar } from "./Sidebar";
 import { Separator } from "@/components/ui/separator";
 import axios from "axios";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -36,7 +36,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
- 
+import "animate.css"; // Import animate.css for animations
+
 interface RoomData {
   Email: string;
   Name: string;
@@ -47,12 +48,12 @@ interface RoomData {
   Nobedrooms: string;
   Cloudurl: string[];
   NormalUrl: string[];
-  Delurls:string[]; 
-  id:string;// Specify images as string[] (array of image URLs)
+  Delurls: string[];
+  id: string;
 }
 
 const Editroom: React.FC = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [isloading, setisloading] = useState(false);
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
@@ -80,27 +81,28 @@ const Editroom: React.FC = () => {
     Nobedrooms: "",
     Cloudurl: [],
     NormalUrl: [],
-    Delurls:[],
-    id:id ||"",
+    Delurls: [],
+    id: id || "",
   });
+
   useEffect(() => {
-    const foo = async () => {
+    const fetchRoomData = async () => {
       try {
         const response = await axios.get("http://localhost:5000/Edit", {
           params: { id },
-          withCredentials:true,
+          withCredentials: true,
         });
-        const Edit = await response.data;
-        setroomdata(Edit);
+        const data = await response.data;
+        setroomdata(data);
       } catch (error) {
         console.log(error);
       }
     };
-    foo();
+    fetchRoomData();
   }, [id]);
+
   useEffect(() => {
     if (roomdata.Email) {
-      // Initialize Editroomdata from roomdata only if roomdata is populated
       setEditroomdata((prev) => ({
         ...prev,
         Email: roomdata.Email,
@@ -113,93 +115,80 @@ const Editroom: React.FC = () => {
         Cloudurl: roomdata.images,
       }));
     }
-  }, [roomdata]); // Runs when roomdata changes
-  ///handlechange
+  }, [roomdata]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditroomdata((prev) => ({
       ...prev,
-      [name]: value, // Use name attribute to update the corresponding field in state
+      [name]: value,
     }));
   };
-  /// selct change finder
+
   const handleSelectChange = (value: string) => {
     setEditroomdata((prev) => ({
       ...prev,
       Nobedrooms: value,
     }));
   };
-  ///image to bs64 and show to user and store
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
       const base64Files: string[] = [];
-
-      // Create a Promise to wait for all images to be read
       const promises = filesArray.map((file) => {
         return new Promise<string>((resolve) => {
           const reader = new FileReader();
-
-          // Read the file as base64
           reader.readAsDataURL(file);
-
           reader.onloadend = () => {
             if (reader.result) {
               base64Files.push(reader.result as string);
-              resolve(reader.result as string); // Resolve when done
+              resolve(reader.result as string);
             }
           };
         });
       });
-
-      // Wait until all files are processed
       Promise.all(promises).then(() => {
-        // Now that all base64 strings are ready, update the state
         const fileURLs = filesArray.map((file) => URL.createObjectURL(file));
-        setBlobUrls(fileURLs); // Set object URLs if needed
-        setEditroomdata((prevEditroomdata) => ({
-          ...prevEditroomdata,
-          NormalUrl: base64Files, // Store base64 strings
+        setBlobUrls(fileURLs);
+        setEditroomdata((prev) => ({
+          ...prev,
+          NormalUrl: base64Files,
         }));
       });
     }
   };
 
-  const imagedelete = (e: number) => {
+  const imagedelete = (index: number) => {
     const updatedCloudUrls = [...Editroomdata.Cloudurl];
-    if(updatedCloudUrls.length>1){
-    setEditroomdata((prevEditroomdata) => ({
-      ...prevEditroomdata,
-      Delurls:[...(prevEditroomdata.Delurls || []), updatedCloudUrls[e]]
-    }));
-    
-      updatedCloudUrls.splice(e, 1);
-  
-      // Update the state with the new array
-      setEditroomdata((prevEditroomdata) => ({
-        ...prevEditroomdata,
+    if (updatedCloudUrls.length > 1) {
+      setEditroomdata((prev) => ({
+        ...prev,
+        Delurls: [...(prev.Delurls || []), updatedCloudUrls[index]],
+      }));
+      updatedCloudUrls.splice(index, 1);
+      setEditroomdata((prev) => ({
+        ...prev,
         Cloudurl: updatedCloudUrls,
       }));
     }
   };
-  const updateapi= async () => {
-    try {
-      setisloading(true)
-      const response=await axios.put("http://localhost:5000/Editeddata",Editroomdata)
-      console.log("response from server:", response.data)
-      
-    } catch (error) {
-      console.error(error)
-    }
-    finally{
-      setisloading(false)
-      navigate("/Roomlist")
-    }
-  }
 
-  // useEffect(() => {
-  //   console.log("Editroomdata state:", Editroomdata);
-  // }, [Editroomdata]);
+  const updateapi = async () => {
+    try {
+      setisloading(true);
+      const response = await axios.put(
+        "http://localhost:5000/Editeddata",
+        Editroomdata
+      );
+      console.log("response from server:", response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setisloading(false);
+      navigate("/Roomlist");
+    }
+  };
 
   return (
     <>
@@ -213,28 +202,28 @@ const Editroom: React.FC = () => {
               <DynamicBreadcrumb />
             </div>
           </header>
-          <div className="grid grid-cols-2  gap-8 m-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4 animate__animated animate__fadeIn">
             <div>
-              <Card>
-              {isloading && (
-                <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center">
-                  <div className="w-16 h-16 border-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"></div>
-                </div>
-              )}
+              <Card className="animate__animated animate__fadeInLeft">
+                {isloading && (
+                  <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
+                    <div className="w-16 h-16 border-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"></div>
+                  </div>
+                )}
                 <CardHeader className="flex justify-center items-center font-bold">
-                  <h1>ROOM DATA </h1>
+                  <h1>ROOM DATA</h1>
                 </CardHeader>
                 <CardContent className="flex flex-col justify-center items-center font-medium gap-y-10 tracking-widest">
-                  <h1>Email :{roomdata.Email}</h1>
-                  <h1>Name :{roomdata.Name}</h1>
-                  <h1>Location :{roomdata.Location}</h1>
-                  <h1>Price :{roomdata.Price}</h1>
-                  <h1>Propertyname :{roomdata.Propertyname}</h1>
-                  <h1>ContactNumber:{roomdata.ContactNumber}</h1>
-                  <h1>Nobedrooms :{roomdata.Nobedrooms}</h1>
+                  <h1>Email: {roomdata.Email}</h1>
+                  <h1>Name: {roomdata.Name}</h1>
+                  <h1>Location: {roomdata.Location}</h1>
+                  <h1>Price: {roomdata.Price}</h1>
+                  <h1>Propertyname: {roomdata.Propertyname}</h1>
+                  <h1>ContactNumber: {roomdata.ContactNumber}</h1>
+                  <h1>Nobedrooms: {roomdata.Nobedrooms}</h1>
                   <Carousel
                     plugins={[plugin.current]}
-                    className="w-m max-w-xs"
+                    className="w-full max-w-xs"
                     onMouseEnter={plugin.current.stop}
                     onMouseLeave={plugin.current.reset}
                   >
@@ -244,175 +233,180 @@ const Editroom: React.FC = () => {
                           <div className="p-1">
                             <Card>
                               <CardContent className="flex aspect-square items-center justify-center p-6">
-                                <span className="text-4xl font-semibold">
-                                  <img src={`${url}`} />
-                                </span>
+                                <img
+                                  src={url}
+                                  alt={`Room image ${index}`}
+                                  className="object-cover w-full h-full rounded"
+                                />
                               </CardContent>
                             </Card>
                           </div>
                         </CarouselItem>
                       ))}
                     </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
+                    <CarouselPrevious className="hidden sm:flex " />
+                    <CarouselNext className="hidden sm:flex" />
                   </Carousel>
                 </CardContent>
-                <CardFooter></CardFooter>
               </Card>
             </div>
             <div>
-              <Card>
+              <Card className="animate__animated animate__fadeInRight">
                 <CardHeader className="flex justify-center items-center font-bold">
                   <h1>EDITED DATA</h1>
                 </CardHeader>
-                <CardContent className="flex flex-col gap-1">
-                  <Label htmlFor="Email">Email</Label>
-                  <Input
-                    id="Email"
-                    name="Email"
-                    placeholder={user.email}
-                    disabled
-                    required
-                  />
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    placeholder={user.name}
-                    disabled
-                  />
-                  <Label htmlFor="Location">Location</Label>
-                  <Input
-                    value={Editroomdata.Location}
-                    id="Location"
-                    name="Location"
-                    placeholder="Location of yoor room"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="Price">Price</Label>
-                  <Input
-                    value={Editroomdata.Price}
-                    required
-                    id="Price"
-                    name="Price"
-                    placeholder="Price Per Day"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="picture">Picture</Label>
-                  <Input
-                    id="picture"
-                    type="file"
-                    multiple
-                    onChange={handleImageChange}
-                    required
-                  />
-                  <div
-                    className={`flex flex-col justify-center items-center 
-                      ${blobUrls.length > 0 ? "" : "hidden"}`}
-                  >
-                    <div>
-                      <Label htmlFor="">Preview</Label>
-                    </div>
-                    <div>
+                <CardContent className="flex flex-col gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="Email">Email</Label>
+                    <Input
+                      id="Email"
+                      name="Email"
+                      placeholder={user.email}
+                      disabled
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      placeholder={user.name}
+                      disabled
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="Location">Location</Label>
+                    <Input
+                      value={Editroomdata.Location}
+                      id="Location"
+                      name="Location"
+                      placeholder="Location of your room"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="Price">Price</Label>
+                    <Input
+                      value={Editroomdata.Price}
+                      required
+                      id="Price"
+                      name="Price"
+                      placeholder="Price Per Day"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="picture">Picture</Label>
+                    <Input
+                      id="picture"
+                      type="file"
+                      multiple
+                      onChange={handleImageChange}
+                      required
+                    />
+                  </div>
+                  {blobUrls.length > 0 && (
+                    <div className="space-y-2">
+                      <Label>Preview</Label>
                       <Carousel
                         plugins={[plugin.current]}
-                        className="w-m max-w-xs"
+                        className="w-full max-w-xs"
                         onMouseEnter={plugin.current.stop}
                         onMouseLeave={plugin.current.reset}
                       >
-                        <CarouselContent className="w-full">
+                        <CarouselContent>
                           {blobUrls.map((url: string, index: number) => (
                             <CarouselItem key={index}>
                               <div className="p-1">
                                 <Card>
                                   <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">
-                                      <img src={`${url}`} />
-                                      <div className="flex justify-center align-bottom"></div>
-                                    </span>
+                                    <img
+                                      src={url}
+                                      alt={`Preview image ${index}`}
+                                      className="object-cover w-full h-full rounded"
+                                    />
                                   </CardContent>
                                 </Card>
                               </div>
                             </CarouselItem>
                           ))}
                         </CarouselContent>
-                        <CarouselPrevious />
-                        <CarouselNext />
+                        <CarouselPrevious className="hidden sm:flex " />
+                        <CarouselNext className="hidden sm:flex" />
                       </Carousel>
                     </div>
-                  </div>
-                  <div
-                    className={`flex justify-center items-center ${
-                      Editroomdata.Cloudurl.length > 0 ? "" : "hidden"
-                    }`}
-                  >
-                    <Carousel
-                      plugins={[plugin.current]}
-                      className="w-m max-w-xs"
-                      onMouseEnter={plugin.current.stop}
-                      onMouseLeave={plugin.current.reset}
-                    >
-                      <CardDescription>
-                        <h1 className="font-normal">
-                          <span className="font-medium text-blue-500">
-                            Note!{" "}
-                          </span>
-                          if you want to delete an image Click the image
-                          Otherwise Use Arrow to change
-                        </h1>
-                      </CardDescription>
-
-                      <CarouselContent>
-                        {Editroomdata.Cloudurl.map(
-                          (url: string, index: number) => (
-                            <CarouselItem key={index}>
-                              <div className="p-1">
-                                <Card>
-                                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">
+                  )}
+                  {Editroomdata.Cloudurl.length > 0 && (
+                    <div className="space-y-2 flex flex-col items-center">
+                      <Label>Existing Images</Label>
+                      <Carousel
+                        plugins={[plugin.current]}
+                        className="w-full max-w-xs"
+                        onMouseEnter={plugin.current.stop}
+                        onMouseLeave={plugin.current.reset}
+                      >
+                        <CarouselContent>
+                          {Editroomdata.Cloudurl.map(
+                            (url: string, index: number) => (
+                              <CarouselItem key={index}>
+                                <div className="p-1">
+                                  <Card>
+                                    <CardContent className="flex aspect-square items-center justify-center p-6">
                                       <img
-                                        src={`${url}`}
-                                        onClick={() => {
-                                          imagedelete(index);
-                                        }}
+                                        src={url}
+                                        alt={`Existing image ${index}`}
+                                        className="object-cover w-full h-full rounded cursor-pointer hover:opacity-75"
                                       />
-                                    </span>
-                                  </CardContent>
-                                </Card>
-                              </div>
-                            </CarouselItem>
-                          )
-                        )}
-                      </CarouselContent>
-                      <CarouselPrevious />
-                      <CarouselNext />
-                    </Carousel>
+                                    </CardContent>
+                                  </Card>
+                                </div>
+                                <div className="flex justify-center mt-2">
+                                  <Button
+                                    variant="outline"
+                                    className="text-red-500 bg-transparent border border-none hover:bg-red-50"
+                                    onClick={() => imagedelete(index)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </div>
+                              </CarouselItem>
+                            )
+                          )}
+                        </CarouselContent>
+                        <CarouselPrevious className="hidden sm:flex" />
+                        <CarouselNext className="hidden sm:flex" />
+                      </Carousel>
+                    </div>
+                  )}
+                  <div className="space-y-2">
+                    <Label htmlFor="Propertyname">Property Name</Label>
+                    <Input
+                      required
+                      value={Editroomdata.Propertyname}
+                      id="Propertyname"
+                      name="Propertyname"
+                      placeholder="Name of your Property"
+                      onChange={handleChange}
+                    />
                   </div>
-
-                  <Label htmlFor="Propertyname">Property Name</Label>
-                  <Input
-                    required
-                    value={Editroomdata.Propertyname}
-                    id="Propertyname"
-                    name="Propertyname"
-                    placeholder="Name of your Property"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="ContactNumber">Contact Number</Label>
-                  <Input
-                    value={Editroomdata.ContactNumber}
-                    required
-                    id="ContactNumber"
-                    name="ContactNumber"
-                    placeholder="Contact Number"
-                    onChange={handleChange}
-                  />
-                  <div className="flex flex-col space-y-1.5">
+                  <div className="space-y-2">
+                    <Label htmlFor="ContactNumber">Contact Number</Label>
+                    <Input
+                      value={Editroomdata.ContactNumber}
+                      required
+                      id="ContactNumber"
+                      name="ContactNumber"
+                      placeholder="Contact Number"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="Nobedroom">No Of Bedrooms</Label>
                     <Select
                       onValueChange={handleSelectChange}
                       required
-                      value={roomdata.Nobedrooms}
+                      value={Editroomdata.Nobedrooms}
                     >
                       <SelectTrigger id="Nobedroom" name="Nobedroom">
                         <SelectValue placeholder="Select" />
@@ -432,7 +426,9 @@ const Editroom: React.FC = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-center items-center">
-                  <Button onClick={updateapi}>Update</Button>
+                  <Button onClick={updateapi} className="w-full sm:w-auto">
+                    Update
+                  </Button>
                 </CardFooter>
               </Card>
             </div>
