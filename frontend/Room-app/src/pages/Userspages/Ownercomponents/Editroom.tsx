@@ -180,7 +180,7 @@ const Editroom: React.FC = () => {
         "http://localhost:5000/Editeddata",
         Editroomdata
       );
-      console.log("response from server:", response.data);
+      console.log("response from server:", response.data.message);
     } catch (error) {
       console.error(error);
     } finally {

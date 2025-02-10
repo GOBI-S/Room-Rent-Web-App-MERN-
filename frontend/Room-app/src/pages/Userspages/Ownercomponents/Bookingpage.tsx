@@ -112,7 +112,7 @@ const UserBookingpage = () => {
     while (disableDates(checkDate)) {
       checkDate.setDate(checkDate.getDate() + 1); // Move to the next day
     }
-    console.log(checkDate); // Log checkDate at each iteration
+    // console.log(checkDate); // Log checkDate at each iteration
 
     // Set the first available date for both 'from' and 'to' in the state
     setDate({
@@ -166,7 +166,7 @@ const UserBookingpage = () => {
             }
           } else {
             // If no response, handle network or other errors
-            console.error("Axios Error: ", error.message);
+            // console.error("Axios Error: ", error.message);
           }
         } else {
           // Handle other types of errors
@@ -195,7 +195,9 @@ const UserBookingpage = () => {
             withCredentials: true,
           }
         );
-        console.log("booking sucees ", response.data);
+        const a=response.data.message;
+        console.log("booking sucees ", a);
+        window.location.reload();
       } catch (error: any) {
         console.log("Error on booking", error.response.data.message);
       }

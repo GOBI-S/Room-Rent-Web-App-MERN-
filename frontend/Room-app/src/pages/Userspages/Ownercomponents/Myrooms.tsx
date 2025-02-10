@@ -53,7 +53,7 @@ const Olistroom = () => {
       const response = await axios.delete("http://localhost:5000/Delete", {
         data: data,
       });
-      console.log("from delete api server side", response.data);
+      console.log("from delete api server side", response.data.message);
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +65,7 @@ const Olistroom = () => {
         params: { email },
         withCredentials: true,
       });
-      console.log("response from server:", response.data);
+      // console.log("response from server:", response.data);
       const rooms = response.data;
       settotal(rooms);
     } catch (error: unknown) {

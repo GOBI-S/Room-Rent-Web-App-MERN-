@@ -21,7 +21,7 @@ export default function SingUppage() {
     try {
       console.log(signUpInputs)
       const response=await axios.post("http://localhost:5000/singup",signUpInputs);
-      console.log("response from server :",response.data)
+      console.log("response from server :",response.data.message)
       navigate("/login")
     } catch (error:any) {
       console.log("response from server :",error.response.data.error);
@@ -33,7 +33,8 @@ export default function SingUppage() {
         const isAnyFieldEmpty = Object.values(signUpInputs).some((value) => !value);
       
         if (isAnyFieldEmpty) {
-          console.log("Please enter all fields to proceed.");
+          alert("Please enter all fields to proceed.");
+          // console.log("Please enter all fields to proceed.");
         } else if (signUpInputs.Password === signUpInputs.ConfirmPassword) {
           try {
             await singupapi(); // Assuming singupapi is an async function that needs to be awaited

@@ -175,20 +175,20 @@ const Mybbooking = () => {
               </h2>
 
               {rooms.length > 0 ? (
-                <div className="overflow-x-auto rounded-lg border border-gray-700 shadow-md">
-                  <Table className="w-full text-white bg-black">
-                    <TableHeader className="bg-gray-900">
-                      <TableRow>
-                        <TableHead className="p-3 text-left text-white">
+                <div className="overflow-x-auto rounded-lg border border-gray-700 shadow-md bg-sidebar  overflow-y-auto max-h-[700px] ">
+                  <Table className="w-full text-white bg-black ">
+                    <TableHeader className="bg-sidebar-primary">
+                      <TableRow className="">
+                        <TableHead className="p-3 text-center text-white ">
                           Propety Name
                         </TableHead>
-                        <TableHead className="p-3 text-left text-white">
+                        <TableHead className="p-3 text-center text-white ">
                           From
                         </TableHead>
-                        <TableHead className="p-3 text-left text-white">
+                        <TableHead className="p-3 text-center text-white">
                           To
                         </TableHead>
-                        <TableHead className="p-3 text-left text-white"></TableHead>
+                        <TableHead className="p-3 text-center text-white"></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -199,18 +199,18 @@ const Mybbooking = () => {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.4, delay: index * 0.1 }}
-                            className="border-b border-gray-700 hover:bg-gray-800 transition-all"
+                            className="border-b border-gray-700 bg-sidebar hover:bg-slate-500 transition-all"
                           >
-                            <TableCell className="p-3">
+                            <TableCell className="p-3 text-center">
                               {roomNames[room.roomid] || "Loading..."}
                             </TableCell>
-                            <TableCell className="p-3">
+                            <TableCell className="p-3 text-center">
                               {new Date(booking.from).toLocaleDateString()}
                             </TableCell>
-                            <TableCell className="p-3">
+                            <TableCell className="p-3 text-center">
                               {new Date(booking.to).toLocaleDateString()}
                             </TableCell>
-                            <TableCell className="p-3">
+                            <TableCell className="p-3 text-center">
                               <Dialog open={isOpen} onOpenChange={setIsOpen}>
                                 <DialogTrigger asChild>
                                   <Button
@@ -370,6 +370,7 @@ const Mybbooking = () => {
                       )}
                     </TableBody>
                   </Table>
+                  <p className="text-gray-400 text-center">End...</p>
                 </div>
               ) : (
                 <p className="text-gray-400 text-center">No bookings found.</p>

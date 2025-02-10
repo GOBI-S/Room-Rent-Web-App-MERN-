@@ -63,13 +63,7 @@ const LoginPage = ({
           })
         );
       }
-
-      // Navigate based on role
-      if (response.data.profiledata.Role === "Owner") {
-        navigate("/Home");
-      } else {
         navigate("/Searchrooms");
-      }
     } catch (error) {
       console.error("Login failed:", error);
       setLe("border-red-600");

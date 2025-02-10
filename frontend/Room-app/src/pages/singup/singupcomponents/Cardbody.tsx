@@ -48,7 +48,7 @@ const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs }) =>
   //   }
  };
 
-  console.log(signUpInputs); // Log the signUpInputs state to check values
+  // console.log(signUpInputs); // Log the signUpInputs state to check values
 
   return (
     <>

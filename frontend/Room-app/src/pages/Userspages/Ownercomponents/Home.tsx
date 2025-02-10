@@ -21,7 +21,7 @@ const OwnerHome = () => {
           params: { email },
           withCredentials: true,
         });
-        console.log("Response from server:", response.data);
+        console.log("Response from server:", response.data.message);
         const data = await response.data;
         settotal(data.total);
       } catch (error: unknown) {

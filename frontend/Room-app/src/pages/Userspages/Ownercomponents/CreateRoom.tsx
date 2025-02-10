@@ -148,7 +148,7 @@ const CreateRoom: React.FC = () => {
           withCredentials: true,
         }
       );
-      console.log("Server Response:", response.data);
+      console.log("Server Response:", response.data.message);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -321,7 +321,7 @@ const CreateRoom: React.FC = () => {
               </CardContent>
 
               <CardFooter className="flex flex-col sm:flex-row justify-between gap-2">
-                <Button variant="outline" className="w-full sm:w-auto">
+                <Button variant="outline" className="w-full sm:w-auto" onClick={()=>navigate("/Searchrooms")}>
                   Cancel
                 </Button>
                 <Button
