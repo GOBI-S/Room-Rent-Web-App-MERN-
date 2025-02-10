@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const secretKey = "gobi";
+const secretKey = process.env.JWT_SECRET_KEY;
 
 // Extending the Request type to include 'user'
 interface AuthRequest extends Request {
@@ -16,6 +16,9 @@ const   tokenverify = async (req: AuthRequest, res: Response, next: NextFunction
   }
 else{
   try {
+    if (!secretKey) {
+      throw new Error("Missing JWT secret key. Please set JWT_SECRET_KEY in your environment variables.");
+    }
     const decoded = jwt.verify(token, secretKey);
     req.user = decoded; // Attach decoded user data to the request
     next(); // Proceed to the next middleware or route handler
