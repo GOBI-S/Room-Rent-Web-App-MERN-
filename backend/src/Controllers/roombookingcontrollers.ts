@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { CreateRoomModel } from "../models/createroom";
 import Room from "../models/bookedshema";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const BookingRoomData = async (req: Request, res: Response) => {
   try {

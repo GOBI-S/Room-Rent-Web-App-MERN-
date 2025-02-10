@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { UserSignupModel } from "../models/loginshema";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const SignupControl = async (req: Request, res: Response): Promise<void> => {
   const { Name, EmailID, Password, ConfirmPassword } = req.body;
