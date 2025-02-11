@@ -1,68 +1,59 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
-interface CardBodyProps {
- 
-  signUpInputs: {
-    Name: string;
-    EmailID: string;
-    Password: string;
-    ConfirmPassword: string;
-  };
-  SetSignUpInputs: React.Dispatch<
-    React.SetStateAction<{
-      Name: string;
-      EmailID: string;
-      Password: string;
-      ConfirmPassword: string;
-    }>
-  >;
-    pass: () => Promise<void>;
-  
+import { useState } from "react";
+
+interface SignUpInputs {
+  Name: string;
+  EmailID: string;
+  Password: string;
+  ConfirmPassword: string;
 }
 
-const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs }) => {
-   // Handling password confirmation state
+interface CardBodyProps {
+  signUpInputs: SignUpInputs;
+  SetSignUpInputs: React.Dispatch<React.SetStateAction<SignUpInputs>>;
+  pass: () => Promise<void>;
+}
 
-  // Handle input changes
+const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs, pass }) => {
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    SetSignUpInputs((prev) => ({
-      ...prev,
-      [name]: value, // Use name attribute to update the corresponding field in state
-    }));
-  };
-
-  // // Handle password confirmation check
-  const handlePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     SetSignUpInputs((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-  //   if (signUpInputs.Password !== value) {
-  //     setconfirmp(false); // Set the confirmation to false if passwords do not match
-  //   } else {
-  //     setconfirmp(true); // Set it back to true if they match
-  //   }
- };
+    // Check if passwords match when ConfirmPassword is updated
+    if (name === "ConfirmPassword") {
+      setPasswordsMatch(signUpInputs.Password === value);
+    }
+  };
 
-  // console.log(signUpInputs); // Log the signUpInputs state to check values
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (signUpInputs.Password !== signUpInputs.ConfirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+    pass();
+  };
 
   return (
     <>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               {/* Name input */}
               <Label htmlFor="Name">Name</Label>
               <Input
                 id="name"
-                name="Name" // Ensure name is set so handleChange can work
+                name="Name"
                 placeholder="Name"
-                value={signUpInputs.Name} // Bind value to state
+                value={signUpInputs.Name}
                 onChange={handleChange}
               />
 
@@ -70,9 +61,9 @@ const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs }) =>
               <Label htmlFor="EmailID">Email</Label>
               <Input
                 id="email"
-                name="EmailID" // Ensure name is set so handleChange can work
+                name="EmailID"
                 placeholder="Email"
-                value={signUpInputs.EmailID} // Bind value to state
+                value={signUpInputs.EmailID}
                 onChange={handleChange}
               />
 
@@ -80,7 +71,7 @@ const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs }) =>
               <Label htmlFor="Password">Password</Label>
               <Input
                 id="password"
-                name="Password" // Ensure name is set so handleChange can work
+                name="Password"
                 type="password"
                 placeholder="Password"
                 value={signUpInputs.Password}
@@ -91,14 +82,17 @@ const CardBody: React.FC<CardBodyProps> = ({ signUpInputs, SetSignUpInputs }) =>
               <Label htmlFor="ConfirmPassword">Confirm Password</Label>
               <Input
                 id="confirmpassword"
-                name="ConfirmPassword" // Ensure name is set so handleChange can work
+                name="ConfirmPassword"
                 type="password"
                 placeholder="Confirm Password"
                 value={signUpInputs.ConfirmPassword}
-                onChange={handleChange} 
-                className={`${signUpInputs.Password==signUpInputs.ConfirmPassword?"":"border-red-600"}`}// Special handler for Confirm Password
+                onChange={handleChange}
+                className={`${passwordsMatch ? "" : "border-red-600"}`}
               />
               {/* Show an error message if passwords don't match */}
+              {!passwordsMatch && (
+                <p className="text-red-600 text-sm mt-1">Passwords do not match.</p>
+              )}
             </div>
           </div>
         </form>

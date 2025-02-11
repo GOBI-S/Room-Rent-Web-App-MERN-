@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const OwnerHome = () => {
+  const URI="https://roomrentweb.gobidev.site";
   const user = useAppSelector((state) => state.user);
   const email = useAppSelector((state) => state.user.email);
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const OwnerHome = () => {
   useEffect(() => {
     async function Totalroom() {
       try {
-        const response = await axios.get("http://localhost:5000/Ownerhome", {
+        const response = await axios.get(`${URI}/Ownerhome`, {
           params: { email },
           withCredentials: true,
         });

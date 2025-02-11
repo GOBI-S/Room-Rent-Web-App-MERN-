@@ -52,6 +52,7 @@ interface RoomData {
 }
 
 const Editroom: React.FC = () => {
+  const URI="https://roomrentweb.gobidev.site";
   const navigate = useNavigate();
   const [isloading, setisloading] = useState(false);
   const plugin = React.useRef(
@@ -87,7 +88,7 @@ const Editroom: React.FC = () => {
   useEffect(() => {
     const fetchRoomData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/Edit", {
+        const response = await axios.get(`${URI}/Edit`, {
           params: { id },
           withCredentials: true,
         });
@@ -177,7 +178,7 @@ const Editroom: React.FC = () => {
     try {
       setisloading(true);
       const response = await axios.put(
-        "http://localhost:5000/Editeddata",
+        `${URI}/Editeddata`,
         Editroomdata
       );
       console.log("response from server:", response.data.message);

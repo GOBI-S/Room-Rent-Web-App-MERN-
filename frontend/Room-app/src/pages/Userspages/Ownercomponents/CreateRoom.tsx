@@ -51,6 +51,7 @@ interface RoomData {
 }
 
 const CreateRoom: React.FC = () => {
+  const URI="https://roomrentweb.gobidev.site";
   const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const plugin = React.useRef(
@@ -142,7 +143,7 @@ const CreateRoom: React.FC = () => {
     try {
       setisloading(true);
       const response = await axios.post(
-        "http://localhost:5000/Createroom",
+        `${URI}/Createroom`,
         Roomdata,
         {
           withCredentials: true,

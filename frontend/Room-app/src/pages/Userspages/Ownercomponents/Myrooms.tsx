@@ -42,6 +42,7 @@ interface Roomtype {
 }
 
 const Olistroom = () => {
+  const URI="https://roomrentweb.gobidev.site";
   const navigate = useNavigate();
   const email = useAppSelector((state) => state.user.email);
   const [total, settotal] = useState<Roomtype[]>([]);
@@ -50,7 +51,7 @@ const Olistroom = () => {
   async function deleteapi(id: any) {
     const data = { id: id };
     try {
-      const response = await axios.delete("http://localhost:5000/Delete", {
+      const response = await axios.delete(`${URI}/Delete`, {
         data: data,
       });
       console.log("from delete api server side", response.data.message);
@@ -61,7 +62,7 @@ const Olistroom = () => {
 
   async function Totalroom() {
     try {
-      const response = await axios.get("http://localhost:5000/Olistroom", {
+      const response = await axios.get(`${URI}/Olistroom`, {
         params: { email },
         withCredentials: true,
       });

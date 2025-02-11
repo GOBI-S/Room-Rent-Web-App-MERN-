@@ -9,7 +9,9 @@ import http from "http";
 dotenv.config(); // Load environment variables
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000; // Use dynamic port assigned by Render
+
+
 const server = http.createServer(app);
 // CORS Options
 const corsOptions = {

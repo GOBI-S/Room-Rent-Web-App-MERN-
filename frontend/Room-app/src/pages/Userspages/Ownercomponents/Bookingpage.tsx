@@ -80,6 +80,7 @@ const UserBookingpage = () => {
     from: undefined, // No default selection
     to: undefined, // No default selection
   });
+  const URI="https://roomrentweb.gobidev.site";
   const clearfunction = () => {
     setDate({
       from: undefined,
@@ -144,7 +145,7 @@ const UserBookingpage = () => {
     const UserBookingroomdata = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/bookingroomdata",
+          `${URI}/bookingroomdata`,
           {
             params: { id },
             withCredentials: true,
@@ -184,7 +185,7 @@ const UserBookingpage = () => {
       setidentifier(identifier + 1);
       try {
         const response = await axios.post(
-          "http://localhost:5000/booked",
+          `${URI}/booked`,
           {
             roomid: id,
             bookerId: user.Userid,
@@ -206,7 +207,7 @@ const UserBookingpage = () => {
 
   const lockbooking = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/bookings/get", {
+      const response = await axios.get(`${URI}/bookings/get`, {
         params: { roomId: id }, // Send `id` as a query parameter
         withCredentials: true, // This should be inside the config object
       });

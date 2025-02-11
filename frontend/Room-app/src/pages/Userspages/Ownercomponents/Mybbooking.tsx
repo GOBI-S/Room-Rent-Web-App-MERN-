@@ -50,6 +50,7 @@ type Room = {
 
 
 const Mybbooking = () => {
+  const URI="https://roomrentweb.gobidev.site";
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // const plugin = React.useRef(
@@ -61,7 +62,7 @@ const Mybbooking = () => {
   const userId = useAppSelector((state) => state.user.Userid);
   const gettinginfo = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/bookings/gets", {
+      const response = await axios.get(`${URI}/bookings/gets`, {
         withCredentials: true,
       });
       const data: Room[] = response.data;
@@ -87,7 +88,7 @@ const Mybbooking = () => {
   const findRoomById = async (roomid: string) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/bookingroomdata",
+        `${URI}/bookingroomdata`,
         {
           withCredentials: true,
           params: { id: roomid },
@@ -103,7 +104,7 @@ const Mybbooking = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:5000/bookingroomdata",
+        `${URI}/bookingroomdata`,
         {
           withCredentials: true,
           params: { id: roomid },

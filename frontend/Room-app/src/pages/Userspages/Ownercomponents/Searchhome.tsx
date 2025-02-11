@@ -62,6 +62,7 @@ interface Roomtype {
 }
 
 const Userhome = () => {
+  const URI="https://roomrentweb.gobidev.site";
   const [bookedDates, setBookedDates] = useState<{
     [key: string]: Array<{ from: Date; to: Date }>;
   }>({});
@@ -99,7 +100,7 @@ const Userhome = () => {
   };
   const lockbooking = async (id: string) => {
     try {
-      const response = await axios.get("http://localhost:5000/bookings/get", {
+        const response = await axios.get(`${URI}/bookings/get`, {
         params: { roomId: id }, // Changed to roomId to match common API conventions
         withCredentials: true,
       });
@@ -151,7 +152,7 @@ const Userhome = () => {
   useEffect(() => {
     async function fetchRooms() {
       try {
-        const response = await axios.get("http://localhost:5000/Userhome", {
+        const response = await axios.get(`${URI}/Userhome`, {
           withCredentials: true,
         });
         const rooms = response.data;

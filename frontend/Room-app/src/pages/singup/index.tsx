@@ -17,10 +17,11 @@ export default function SingUppage() {
     Password: "",
     ConfirmPassword: "",
   });
+  const URI="https://roomrentweb.gobidev.site";
    const singupapi =async()=>{
     try {
       console.log(signUpInputs)
-      const response=await axios.post("http://localhost:5000/singup",signUpInputs);
+      const response=await axios.post(`${URI}/singup`,signUpInputs);
       console.log("response from server :",response.data.message)
       navigate("/login")
     } catch (error:any) {
