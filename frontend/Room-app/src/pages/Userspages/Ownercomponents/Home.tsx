@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const OwnerHome = () => {
+  // const URI2="http://localhost:5000";
+  // const URI=URI2;
   const URI="https://roomrentweb.gobidev.site";
   const user = useAppSelector((state) => state.user);
   const email = useAppSelector((state) => state.user.email);

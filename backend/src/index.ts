@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000; // Use dynamic port assigned by Render
 const server = http.createServer(app);
 // CORS Options
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173"], // Allow both
+  origin: ["http://localhost:5174", "https://roomrentwebmern.gobidev.site"], // Allow both
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],

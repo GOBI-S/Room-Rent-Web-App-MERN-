@@ -17,7 +17,9 @@ export default function SingUppage() {
     Password: "",
     ConfirmPassword: "",
   });
-  const URI="https://roomrentweb.gobidev.site";
+  const URI2="http://localhost:5000";
+  const URI=URI2;
+  // const URI="https://roomrentweb.gobidev.site";
    const singupapi =async()=>{
     try {
       console.log(signUpInputs)

@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useNavigate } from "react-router-dom";
+import 'animate.css';
 
 interface RoomData {
   Email: string;
@@ -51,6 +52,8 @@ interface RoomData {
 }
 
 const CreateRoom: React.FC = () => {
+  // const URI2="http://localhost:5000";
+  // const URI=URI2;
   const URI="https://roomrentweb.gobidev.site";
   const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();

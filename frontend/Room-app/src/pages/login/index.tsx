@@ -24,7 +24,9 @@ const LoginPage = ({
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const URI="https://roomrentweb.gobidev.site";
+  const URI2="http://localhost:5000";
+  const URI=URI2;
+  // const URI="https://roomrentweb.gobidev.site";
   // Focus on the email input when the component mounts
   useEffect(() => {
     if (emailRef.current) {
@@ -53,6 +55,7 @@ const LoginPage = ({
       );
 
       const navitems = Cookies.get("navkeys");
+      console.log(navitems)
       console.log("Response from server:", response.data.message);
       if (navitems) {
         const parsedNavItems = JSON.parse(navitems);

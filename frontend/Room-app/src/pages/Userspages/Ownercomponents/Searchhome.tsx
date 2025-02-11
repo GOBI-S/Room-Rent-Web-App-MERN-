@@ -47,7 +47,7 @@ import {
 import DynamicBreadcrumb from "@/hooks/brudcrumbhooks";
 import { AppSidebar } from "./Sidebar";
 import { cn } from "@/lib/utils";
-
+import 'animate.css';
 interface Roomtype {
   _id: string;
   Email: string;
@@ -62,6 +62,8 @@ interface Roomtype {
 }
 
 const Userhome = () => {
+  // const URI2="http://localhost:5000";
+  // const URI=URI2;
   const URI="https://roomrentweb.gobidev.site";
   const [bookedDates, setBookedDates] = useState<{
     [key: string]: Array<{ from: Date; to: Date }>;

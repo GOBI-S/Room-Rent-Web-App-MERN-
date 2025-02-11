@@ -52,6 +52,8 @@ interface RoomData {
 }
 
 const Editroom: React.FC = () => {
+  // const URI2="http://localhost:5000";
+  // const URI=URI2;
   const URI="https://roomrentweb.gobidev.site";
   const navigate = useNavigate();
   const [isloading, setisloading] = useState(false);
@@ -186,7 +188,7 @@ const Editroom: React.FC = () => {
       console.error(error);
     } finally {
       setisloading(false);
-      navigate("/Roomlist");
+      navigate("/myrooms");
     }
   };
 

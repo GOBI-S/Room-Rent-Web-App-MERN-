@@ -42,6 +42,8 @@ interface Roomtype {
 }
 
 const Olistroom = () => {
+  // const URI2="http://localhost:5000";
+  // const URI=URI2;
   const URI="https://roomrentweb.gobidev.site";
   const navigate = useNavigate();
   const email = useAppSelector((state) => state.user.email);
